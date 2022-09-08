@@ -1,6 +1,5 @@
 package rodeo.test
 
-import zio._
 import zio.test._
 
 object OptionsSpec extends ZIOSpecDefault {
