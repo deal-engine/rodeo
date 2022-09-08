@@ -17,6 +17,7 @@ object VariablesSpec extends ZIOSpecDefault {
     } @@ ignore,
 
     test("mutableSeq has changed it's internal value even if the val has not changed") {
+      updateRodeo()
       assertTrue(rodeo.exists(_ > 0))
     } @@ ignore
   )
