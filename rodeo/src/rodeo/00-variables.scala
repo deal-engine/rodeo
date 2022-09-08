@@ -21,10 +21,10 @@ object Variables {
   // Most of the time immutable variables are the kind you will be using on Scala,
   // However there are special occasions when you actually need *mutable references*
   // IMPORTANT: As noted before these type of variables are discouraged from functional programming principles.
-  var seen: Int = 0
-  seen += 1
-  seen += 3
-  // Exercise: Make the seen variable to hold a value of 99
+  var beers: Int = 0
+  beers += 1
+  beers = beers * 2
+  // Exercise: Make the beers variable to hold a value of 99
 
   // Caveat: Values can have internal mutable variables
   //

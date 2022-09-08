@@ -12,8 +12,8 @@ object VariablesSpec extends ZIOSpecDefault {
       assertTrue(yourAge > 0)
     } @@ ignore,
 
-    test("seen is assigned to value 99") {
-      assertTrue(seen == 99)
+    test("beers is assigned to value 99") {
+      assertTrue(beers == 99)
     } @@ ignore,
 
     test("mutableSeq has changed it's internal value even if the val has not changed") {
