@@ -1,10 +1,12 @@
-package rodeo.test
+package rodeo
 
 import zio.test._
-import zio.test.TestAspect.ignore
+import zio.test.TestAspect._
 
 object VariablesSpec extends ZIOSpecDefault {
+
   import rodeo.Variables._
+
   def spec = suite("VariablesSpec")(
     test("yourAge is assigned to a value greater than zero") {
       assertTrue(yourAge > 0)

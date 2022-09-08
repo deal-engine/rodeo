@@ -1,6 +1,6 @@
-package rodeo.test
+package rodeo
 
-import zio.test._
+import zio.test.{ZIOSpecDefault, assertTrue}
 
 object OptionsSpec extends ZIOSpecDefault {
   def spec = suite("OptionsSpec")(
