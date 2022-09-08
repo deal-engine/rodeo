@@ -2,9 +2,9 @@ package rodeo
 
 object Options {
 
-  // Options are used to represent the presence of some value.
-  // Some other non-functional languages use NULL to indicate absence.
+  // Options are used to represent the presence or absence of some value.
   //
+  // Some other non-functional languages use NULL to indicate absence.
   // However this can lead to unchecked errors, since people cannot know
   // if the value exists unless they explictly check with `!= null`
   //

@@ -20,7 +20,7 @@ object Tuples {
   // In Scala3 tuples are not restricted to 22 fields.
   //
   // In literature tuples are known as "products" `A x B` because they
-  // can hold for every possible value of A every possible value of B.
+  // can hold for every possible value of A, every possible value of B.
 
 
   // Exercise: Create a tuple containing your name and age.
