@@ -6,13 +6,13 @@ object Options {
   //
   // Some other non-functional languages use NULL to indicate absence.
   // However this can lead to unchecked errors, since people cannot know
-  // if the value exists unless they explictly check with `!= null`
+  // if the value exists unless they explicitly check with `!= null`
   //
   // For this reason, in Scala it's a common idiom to use the Option type instead.
   // For example: the type Option[String] expresses the idea of an String that may
   // exist or not.
 
-  // Excercise: Using the Some(_) constructor, change the value assigned to
+  // Exercise: Using the Some(_) constructor, change the value assigned to
   // this variable to be some integer 42.
   val theAnwserToTheUniverseAndEverything: Option[Int] = None
 
@@ -22,7 +22,7 @@ object Options {
   //
   // Pattern matching allows us to "switch" depending on the
   // structure of the value it is passed.
-  // Excercise: Change this code so that if theAnswerToTheUniverseAndEverything
+  // Exercise: Change this code so that if theAnswerToTheUniverseAndEverything
   // holds some value, the `youKnow` variable gets assigned to "you know it all".
   val youKnow: String = theAnwserToTheUniverseAndEverything match {
     case None         => "you know nothing"

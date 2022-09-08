@@ -12,9 +12,20 @@ import scala.collection.mutable.{Seq => MutableSeq}
 object Variables {
 
   // Variables are references used to assign meaningful names to values.
+  // Naming variables is one of the most important skills in programming.
 
+  // A variable in Scala is defined using the keyword 'val' or 'var'.
   // `val` variables are  immutable, that means they cannot change once they are assigned.
-  //
+  // `var` variables are mutable, that means they can be made to reference a different value.
+
+  // The type of a variable is inferred by the Scala compiler.
+  // In this example, the Scala compiler infers that the type of `youAreLearning` is String.
+  val youAreLearning = "Scala"
+
+  // The type of a variable can also be explicitly specified using a colon and the type name.
+  val youAreAwesome: Boolean = true
+
+  // On the following exercises, replace the `???` placeholder with the correct code.
   // Exercise: Assign your age to the `yourAge` variable.
   val yourAge: Int = ???
 
