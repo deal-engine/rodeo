@@ -1,6 +1,8 @@
 package rodeo
 
-object Options {
+import zio.test.assertTrue
+
+object Options extends Chapter {
 
   // Options are used to represent the presence or absence of some value.
   //
@@ -12,9 +14,27 @@ object Options {
   // For example: the type Option[String] expresses the idea of an String that may
   // exist or not.
 
-  // Exercise: Using the Some(_) constructor, change the value assigned to
-  // this variable to be some integer 42.
-  val theAnwserToTheUniverseAndEverything: Option[Int] = None
+  Exercise(
+    "Use the Some constructor to create an Option",
+    pending = true
+  ) {
+    //  Using the Some(_) constructor, change the value assigned to
+    // this variable to be some integer 42.
+    val theAnwserToTheUniverseAndEverything: Option[Int] = None
+
+    assertTrue(theAnwserToTheUniverseAndEverything.contains(42))
+  }
+
+  // since optional values could be absent, trying to obtain the contained value
+  // is an *unsafe* operation UNLESS you provide a default in case the option is None
+  //
+  Exercise("Use getOrElse", pending = true) {
+    //  Using Option.getOrElse obtain the value contained in `rodeo` or if it is absent "its my first rodeo"
+    def fury(rodeo: Option[String]): String = ???
+
+    assertTrue(fury(None) == "its my first rodeo") &&
+    assertTrue(fury(Some("My second rodeo")) == "My second rodeo")
+  }
 
   // Option is one of the simplest pure functional data structures
   //
@@ -22,18 +42,22 @@ object Options {
   //
   // Pattern matching allows us to "switch" depending on the
   // structure of the value it is passed.
-  // Exercise: Change this code so that if theAnswerToTheUniverseAndEverything
-  // holds some value, the `youKnow` variable gets assigned to "you know it all".
-  val youKnow: String = theAnwserToTheUniverseAndEverything match {
-    case None         => "you know nothing"
-    case Some(answer) => ???
+  Exercise("Pattern matching on Option", pending = true) {
+    // Change this code so that if theAnswer
+    // if theAnswer holds 42 the value returned is "you know it all".
+    // if theAnswer holds 23 the value should be "Air Jordan"
+    // otherwise the value returned should be "Something"
+    def youKnow(theAnswer: Option[Int]): String = theAnswer match {
+      case None => "Not enough information"
+      case _    => "Fix me"
+    }
+
+    assertTrue(youKnow(None) == "Not enough information") &&
+    assertTrue(youKnow(Some(42)) == "you know it all") &&
+    assertTrue(youKnow(Some(23)) == "Air Jordan") &&
+    assertTrue(youKnow(Some(99)) == "Something") &&
+    assertTrue(youKnow(Some(10)) == "Something")
+
   }
-
-
-  // since optional values could be absent, trying to obtain the contained value
-  // is an *unsafe* operation UNLESS you provide a default in case the option is None
-  //
-  // Excercise: Using Option.getOrElse obtain the value contained in `rodeo` or if it is absent "its my first rodeo"
-  def fury(rodeo: Option[String]): String = ???
 
 }
