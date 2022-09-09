@@ -34,7 +34,7 @@ package object rodeo {
     ): rodeo.Exercise.PartiallyApplied =
       new rodeo.Exercise.PartiallyApplied(
         instruction,
-        !pending,
+        pending,
         aspect,
         mutableSpecs
       )
@@ -43,7 +43,7 @@ package object rodeo {
   case class Exercise(
       instruction: String,
       assertion: ZIO[Any, Nothing, TestResult],
-      enabled: Boolean,
+      pending: Boolean,
       sourceLocation: SourceLocation,
       aspect: TestAspectPoly
   )
@@ -64,22 +64,22 @@ package object rodeo {
 
     class PartiallyApplied(
         instruction: String,
-        enabled: Boolean,
+        pending: Boolean,
         aspect: TestAspectPoly,
         into: MutableSeq[SpecType]
     ) {
       def apply(spec: SpecType): Unit = {
-        into.addOne(spec.when(enabled) @@ aspect)
+        into.addOne(spec @@ pendingAspect(pending) @@ aspect)
       }
 
       def apply(assertion: ZIO[Any, Nothing, TestResult])(implicit
           sourceLocation: SourceLocation
-      ): Unit = into.addOne(
+      ): Unit = apply(
         test(instruction)(assertion)(
           implicitly[TestConstructor[Any, ZIO[Any, Nothing, TestResult]]],
           sourceLocation,
           implicitly
-        ) @@ pendingAspect(!enabled) @@ aspect
+        )
       )
 
       def apply(assertion: => TestResult)(implicit
