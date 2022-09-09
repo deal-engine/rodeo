@@ -1,13 +1,17 @@
 import zio.internal.stacktracer.SourceLocation
+import zio.test.Spec.MultipleCase
 import zio.test.{
   Spec,
   TestAspect,
+  TestAspectAtLeastR,
   TestAspectPoly,
   TestConstructor,
   TestResult,
+  TestSuccess,
+  suite,
   test
 }
-import zio.{Chunk, ZIO}
+import zio.{Chunk, Trace, ZIO}
 
 import scala.collection.mutable.{ArrayBuffer => MutableSeq}
 
@@ -46,6 +50,18 @@ package object rodeo {
 
   object Exercise {
 
+    def pendingAspect(pending: Boolean): TestAspectAtLeastR[Any] =
+      new TestAspectAtLeastR[Any] {
+        override def some[R <: Any, E](
+            spec: Spec[R, E]
+        )(implicit trace: Trace): Spec[R, E] =
+          spec.transform[R, E] {
+            case Spec.LabeledCase(label, spec) if pending =>
+              Spec.LabeledCase(s"TODO: ${label}", Spec.empty)
+            case other => other
+          }
+      }
+
     class PartiallyApplied(
         instruction: String,
         enabled: Boolean,
@@ -63,7 +79,7 @@ package object rodeo {
           implicitly[TestConstructor[Any, ZIO[Any, Nothing, TestResult]]],
           sourceLocation,
           implicitly
-        ).when(enabled) @@ aspect
+        ) @@ pendingAspect(!enabled) @@ aspect
       )
 
       def apply(assertion: => TestResult)(implicit
