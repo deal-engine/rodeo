@@ -1,31 +1,27 @@
-import zio.{Chunk, Trace, ZIO}
 import zio.internal.stacktracer.SourceLocation
-import zio.test.Spec.labeled
 import zio.test.{
   Spec,
-  SuiteConstructor,
   TestAspect,
   TestAspectPoly,
   TestConstructor,
   TestResult,
-  suite,
   test
 }
+import zio.{Chunk, ZIO}
 
-import collection.mutable.{ArrayBuffer => MutableSeq}
+import scala.collection.mutable.{ArrayBuffer => MutableSeq}
 
 /** Nothing to see here. Open the chapter files in order.
   *
   * In here just helpers used in chapters.
   */
 package object rodeo {
+  type SpecType = Spec[Any, Any]
 
   trait Chapter {
-    type SpecType = Spec[Any, Any]
+    private val mutableSpecs: MutableSeq[SpecType] = MutableSeq.empty
 
-    private val mutableSpecs: MutableSeq[Exercise] = MutableSeq.empty
-
-    def exercises: Chunk[Exercise] = Chunk.fromIterable(mutableSpecs)
+    def exercises: Chunk[SpecType] = Chunk.fromIterable(mutableSpecs)
 
     def Exercise(
         instruction: String,
@@ -54,21 +50,25 @@ package object rodeo {
         instruction: String,
         enabled: Boolean,
         aspect: TestAspectPoly,
-        into: MutableSeq[Exercise]
+        into: MutableSeq[SpecType]
     ) {
+      def apply(spec: SpecType): Unit = {
+        into.addOne(spec.when(enabled) @@ aspect)
+      }
+
+      def apply(assertion: ZIO[Any, Nothing, TestResult])(implicit
+          sourceLocation: SourceLocation
+      ): Unit = into.addOne(
+        test(instruction)(assertion)(
+          implicitly[TestConstructor[Any, ZIO[Any, Nothing, TestResult]]],
+          sourceLocation,
+          implicitly
+        ).when(enabled) @@ aspect
+      )
 
       def apply(assertion: => TestResult)(implicit
           sourceLocation: SourceLocation
-      ): Unit =
-        into.addOne(
-          new Exercise(
-            instruction,
-            assertion = ZIO.succeed(assertion),
-            enabled,
-            sourceLocation,
-            aspect
-          )
-        )
+      ): Unit = apply(ZIO.succeed(assertion))(sourceLocation)
 
     }
   }

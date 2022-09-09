@@ -1,7 +1,6 @@
 package rodeo
 
-import zio.test.TestAspect.{ignore, tag}
-import zio.test.{Spec, assertTrue, test}
+import zio.test.assertTrue
 
 import scala.collection.mutable.{Seq => MutableSeq}
 
