@@ -4,19 +4,16 @@ import zio.test.assertTrue
 
 import scala.collection.mutable.{Seq => MutableSeq}
 
-/** Welcome to DealEngine scala rodeo.
+/** Welcome to DealEngine's Scala Rodeo.
   *
   * This material is intended for you to learn the basic of scala and some
   * common functional idioms.
   *
   * Along the way you will find some Exercises, requiring you to change some
-  * code in order to practice some concepts. In order to make them run,
-  * change the `pending = true` value to `pending = false` for that
-  * particular exercise.
+  * code in order to practice some concepts.
   *
-  * You might use the following command to run all tests in watch mode:
-  *
-  * `mill --watch __.test`
+  * Run the following
+  * `mill --watch rodeo.test`
   */
 object Variables extends Chapter {
 
@@ -30,6 +27,7 @@ object Variables extends Chapter {
   // The type of a value is inferred by the Scala compiler.
   // In this example, the Scala compiler infers that the type of `youAreLearning` is String.
   val youAreLearning = "Scala"
+
   // Exercise: Try uncommenting the following line and see the compiler error message. Then comment it again.
   // youAreLearning = "To fall"
 
@@ -38,8 +36,7 @@ object Variables extends Chapter {
   val youAreAwesome: Boolean = true
 
   Exercise(
-    "Assign your age to the `yourAge` variable",
-    pending = true
+    "Assign your age to the `yourAge` variable"
   ) {
     // Replace the `???` placeholder with the correct code.
     val yourAge: Int = ???
@@ -62,7 +59,7 @@ object Variables extends Chapter {
   // Most of the time immutable variables are the kind you will be using on Scala,
   // However there are special occasions when you actually need *mutable references*
   // IMPORTANT: As noted before these type of variables are discouraged from functional programming principles.
-  Exercise("Make the beers variable to hold a value of 99", pending = true) {
+  Exercise("Make the beers variable to hold a value of 99") {
     var beers: Int = 0
     beers += 1
     beers = beers * 2
@@ -74,10 +71,7 @@ object Variables extends Chapter {
   // Caveat: Values can have internal mutable variables
   //
   // As such even if something appears as an immutable val it could still mutate! Dx
-  Exercise(
-    "Change a mutable object stored in an immutable value",
-    pending = true
-  ) {
+  Exercise("Change a mutable object stored in an immutable value") {
     val rodeo: MutableSeq[Int] = MutableSeq(0)
 
     // Exercise: Using MutableSeq#update, change the first value on rodeo to be 99

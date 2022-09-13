@@ -24,7 +24,7 @@ object Tuples extends Chapter {
   // In literature tuples are known as "products" `A x B` because they
   // can hold for every possible value of A, every possible value of B.
 
-  Exercise("Create a tuple containing your name and age", pending = true) {
+  Exercise("Create a tuple containing your name and age") {
     val nameAndAge: (String, Int) = (???, ???)
     assertTrue(nameAndAge._1.nonEmpty, nameAndAge._2 > 0)
   }
@@ -37,7 +37,7 @@ object Tuples extends Chapter {
   // eg. tuple._1 should give you access to the first value
   // and tuple._2 to the second one, and so on.
 
-  Exercise("Access the second element of a tuple", pending = true) {
+  Exercise("Access the second element of a tuple") {
     val friends: (String, String) = ("davo", "fabian")
     // Using Tuple._2 access the second element of the `friends` tuple and
     // assign it to the `secondFriend` variable.
