@@ -1,5 +1,4 @@
 import zio.internal.stacktracer.SourceLocation
-import zio.test.Spec.MultipleCase
 import zio.test.{
   Spec,
   TestAspect,
@@ -7,8 +6,6 @@ import zio.test.{
   TestAspectPoly,
   TestConstructor,
   TestResult,
-  TestSuccess,
-  suite,
   test
 }
 import zio.{Chunk, Trace, ZIO}
@@ -28,22 +25,19 @@ package object rodeo {
     def exercises: Chunk[SpecType] = Chunk.fromIterable(mutableSpecs)
 
     def Exercise(
-        instruction: String,
-        pending: Boolean = false,
+        name: String,
         aspect: TestAspectPoly = TestAspect.identity
     ): rodeo.Exercise.PartiallyApplied =
       new rodeo.Exercise.PartiallyApplied(
-        instruction,
-        pending,
+        name,
         aspect,
         mutableSpecs
       )
   }
 
   case class Exercise(
-      instruction: String,
+      name: String,
       assertion: ZIO[Any, Nothing, TestResult],
-      pending: Boolean,
       sourceLocation: SourceLocation,
       aspect: TestAspectPoly
   )
@@ -63,19 +57,18 @@ package object rodeo {
       }
 
     class PartiallyApplied(
-        instruction: String,
-        pending: Boolean,
+        name: String,
         aspect: TestAspectPoly,
         into: MutableSeq[SpecType]
     ) {
       def apply(spec: SpecType): Unit = {
-        into.addOne(spec @@ pendingAspect(pending) @@ aspect)
+        into.addOne(spec @@ aspect)
       }
 
       def apply(assertion: ZIO[Any, Nothing, TestResult])(implicit
           sourceLocation: SourceLocation
       ): Unit = apply(
-        test(instruction)(assertion)(
+        test(name)(assertion)(
           implicitly[TestConstructor[Any, ZIO[Any, Nothing, TestResult]]],
           sourceLocation,
           implicitly
