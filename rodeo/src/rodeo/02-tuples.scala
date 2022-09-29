@@ -46,4 +46,23 @@ object Tuples extends Chapter {
     assertTrue(secondFriend == "fabian")
   }
 
+  Exercise("Access elements of a tuple via pattern matching") {
+    val (davo, fabian): (String, String) = ???
+
+    assertTrue(davo == "davo")
+    assertTrue(fabian == "fabian")
+  }
+
+  Exercise("Use arrow `->` as syntactic sugar to create tuples") {
+    val friends: (String, String) = "TODO" -> "TODO"
+    assertTrue(friends == ("davo", "fabian"))
+  }
+
+  Exercise("Destructure tuples in a function") {
+    val seq: Seq[Int] = Seq((1, 2), (3, 4)).map { case (a, b) =>
+      ???
+    }
+    assertTrue(seq == Seq(3, 7))
+  }
+
 }

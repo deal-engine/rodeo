@@ -4,17 +4,6 @@ import zio.test.assertTrue
 
 import scala.collection.mutable.{Seq => MutableSeq}
 
-/** Welcome to DealEngine's Scala Rodeo.
-  *
-  * This material is intended for you to learn the basic of scala and some
-  * common functional idioms.
-  *
-  * Along the way you will find some Exercises, requiring you to change some
-  * code in order to practice some concepts.
-  *
-  * Run the following
-  * `mill --watch rodeo.test`
-  */
 object Variables extends Chapter {
 
   // Variables are references used to assign meaningful names to values.
@@ -23,6 +12,10 @@ object Variables extends Chapter {
   // A name assignment in Scala is defined using the keyword 'val' or 'var'.
   // `val` (Values) are immutable, that means they cannot change once they are assigned.
   // `var` (Variables) are mutable, that means they can be made to reference a different value.
+
+  // Generally we encourage you to try to use immutable values, as they prevent you
+  // from common pitfalls, such as race conditions, especially when dealing with structured concurrent programs,
+  // as multiple processes may read/write values
 
   // The type of a value is inferred by the Scala compiler.
   // In this example, the Scala compiler infers that the type of `youAreLearning` is String.
@@ -43,6 +36,9 @@ object Variables extends Chapter {
 
     assertTrue(yourAge > 0)
   }
+
+  // Curly brackets in vals or Brackets
+  // Multiple expressions
 
   // Values can be eager or lazy.
   //

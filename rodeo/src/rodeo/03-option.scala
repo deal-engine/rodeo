@@ -59,4 +59,39 @@ object Options extends Chapter {
 
   }
 
+  Exercise("Define an empty option of a specific type") {
+    //
+    val emptyMaybeString: Option[String] = ???
+    assertTrue(emptyMaybeString.isEmpty)
+  }
+
+  Exercise("Multiple Option operators") {
+    Option(1)
+    // exists
+    // contains
+    // forall -> regresa true cuando es Empty
+    // map
+    // flatMap
+    val maybeName = Option("raka")
+    // TODO
+    assertTrue(true)
+  }
+
+  Exercise("Pattern match with Options") {
+    val maybeName: Option[String] = ???
+
+    maybeName match {
+      case Some(name) =>
+        assertTrue(name == "raka")
+      case None =>
+        assertTrue(false)
+    }
+  }
+
+  Exercise("Convert an Option to a Seq") {
+    val maybeName = Some("raka")
+    // Use .toSeq to convert an Option to a Seq
+    val nameSeq: Seq[String] = ???
+    assertTrue(nameSeq == Seq("raka"))
+  }
 }

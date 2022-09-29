@@ -1,6 +1,8 @@
 package rodeo
 
 object BasicTypes {
+  // Ignore this line
+  type ??? = Nothing
 
   // In scala we have a few basic types, which are the same as in Java.
   // For example, we have `Int`s and `Double`s, `Boolean`s, `String`s, `Char`s, you might
@@ -16,6 +18,9 @@ object BasicTypes {
   // This means that an Int is also an instance of `Any`, as is any String or any other type.
   // Exercise: Try changing the right hand side to a String or a Boolean
   val anyValueCanBeAssignedHere: Any = 1
+
+  // Any - Object
+  // Common pitfalls
 
   // We also have `Nothing`, which is a subtype of all other types that can possibly exist.
   // Contrary to `Any`, `Nothing` has no instances. In other words, there exist no values of type `Nothing`.

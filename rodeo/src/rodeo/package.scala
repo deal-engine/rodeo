@@ -62,8 +62,7 @@ package object rodeo {
         into: MutableSeq[SpecType]
     ) {
       def apply(spec: SpecType): Unit = {
-        // TODO Add Failfast aspect
-        into.addOne(spec @@ aspect) // @@ pendingAspect(pending)
+        into.addOne(spec @@ aspect)
       }
 
       def apply(assertion: ZIO[Any, Nothing, TestResult])(implicit
