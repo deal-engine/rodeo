@@ -15,12 +15,35 @@ object CaseClasses {
       class to have. Some of the benefits of using Case Classes are the following.
 
       1) An accessor method is generated for each parameter in the constructor.
-      2) Case classes are easier to instantiate because  the `new` keyword in unnecessary.
-      3) Case classes allows us to use pattern matching.
-
+      2) Case classes are easier to instantiate because  the `new` keyword in unnecessary. An
+      `apply` method is generated on the companion-object which internally calls `new`.
+      3) Case classes allows us to use pattern matching. An `unapply` method is generated on the
+      companion-object which allows destructuring the fields that were used to build an instance.
+      4) A copy method is automatically added on each instance that allows an easy way to modify part of an existing
+      instance.
+      5) equals methods and hashCode and other serializable methods are generated automatically for each instance, which
+      means they can be used as keys on HashMaps
   */
 
-   Exercise("Area") {
+
+  // The following exercise is meant to explain why case classes are used to model immutable data.
+
+  Exercise("Mentors") {
+
+    case class PersonaA(name: String, age: Int)
+    class PersonaB(name: String, age: Int)
+
+    val codingMaster = PersonaA.apply("Vic", 40)
+    val bossMaster = PersonaA.apply("David", 33)
+    val mentor = new PersonaB("Fabian", 28)
+    val mentor2 = new PersonaB("Mon", 29)
+
+
+
+  }
+
+
+  Exercise("Perimeter") {
     // Traits can be thought of as interfaces. They define a type but no constructor for it.
     // Constructors are defined only in derived types.
     // Case classes that inherit from a given trait must define a implementation for the methods within this trait.
@@ -46,46 +69,78 @@ object CaseClasses {
     assertTrue(circle.getPerimeter == ???)
     assertTrue(square.getPerimeter == ???)
 
-    // The correct definition of perimeter for these two shapes is defined inside the corresponding case class.
+
+    // The correct definition of  `getPerimeter` for these two shapes is defined inside the corresponding case class.
     // Another way to define an operation that could handle both cases is by using pattern matching.
 
-    def ShapePerimeter(someshape: Shape): Float = {
-      someshape match {
+    def getPerimeter(someShape: Shape): Float = {
+      someShape match {
         case Circle(radius) => 2 * 3.1416 * radius
         case Polygon(sides) => ???
+
+        /*
+      In this case `getPerimeter` doesn't need to be included as an interface function of the Shape trait.
+      The global function getPerimeter uses pattern matching to handle the possible types of the input.
+      This is only possible because we defined shape as a sealed trait.
+      A sealed trait can be extended only in the same file it is defined.
+      This allows the compiler to check if all the cases are exhausted by our "match".
+    */
       }
-
-      // In this case getPerimeter doesn't need to be included as an interface function of the Shape trait.
-      // The global function ShapePerimeter uses pattern matching to handle the possible types of the input.
-
     }
 
     Exercise("Equals"){
 
-      // To compare two instances of a given case class we only have two compare there values.
-      // If two instances have they same values the equality operator `==` will return true.
+      // To compare two instances of a given case class we only have to compare their values.
+      // If two instances have they same values the equality method `==` will return true.
       // This makes case classes lightweight datastructures.
 
       case class ScalaBooks(name:String,level:String,numberOfPages:Int)
 
-      val Book: ScalaBooks = ScalaBooks("Functional Programming in Scala ", "Advanced", 320)
+      val book: ScalaBooks = ScalaBooks("Functional Programming in Scala ", "Advanced", 320)
 
-      val BookPirate: ScalaBooks = ScalaBooks("Functional Programming in Scala ", "Advanced", 320)
+      val bookPirate: ScalaBooks = ScalaBooks("Functional Programming in Scala ", "Advanced", 320)
 
-      val BookDummies: ScalaBooks = ScalaBooks("Scala for dummies ", "dummy", 420)
+      val bookDummies: ScalaBooks = ScalaBooks("Scala for dummies ", "dummy", 420)
 
 
-      assertTrue(Book == ???)
-      assertTrue(Book != ???)
+      assertTrue(book == ???)
+      assertTrue(book != ???)
+    }
+
+    Exercise("case class from class") {
+      /*
+      In order to define an accessor method for the constructor parameters in a plain class we need to declare this
+      parameters as val s.
+      */
+      class Persona(val name: String, val age: Int)
+
+      /*
+     If we want to instantiate this class without the `new` keyword we need to construct a companion object `Persona`
+      and define an appropriate apply method within this object.
+      */
+
+      object Persona {
+        def apply(name: String, age: Int): Persona = new Persona("Alex", 20)
+      }
+
+      val Alex = Persona("Alejandro", 33)
+
+      assertTrue(Alex.name == ???)
+
+      /*
+
+      */
 
     }
 
-     case class DealEngineScalaGurus(name: String, experience: Int)
-     val David: DealEngineScalaGurus =  DealEngineScalaGurus("David",10)
+    Exercise("Enumerations"){
 
-     Exercise("Enumerations") {
+       case class DealEngineScalaGurus(name: String, experience: Int)
+       val boss : DealEngineScalaGurus = DealEngineScalaGurus("David", 10)
+
        // The definition of our ScalaGurus case class allows us to pass invalid constructor arguments.
        // For example a DealEngineScalaGuru with name Andrew is clearly not a valid option.
+       // This example is not over.
 
        sealed trait Gurus
        case object David extends Gurus
@@ -93,20 +148,22 @@ object CaseClasses {
        case object Mon extends Gurus
        case object Fabian extends Gurus
 
-       def GuruExperience(name: Gurus): Int =
+       def guruYearsOfExperience(name: Gurus): Int =
          name match {
            case David => 10
-           case Vic => 10
-           case Mon => 7
+           case Vic => ??? // You need to research this.
+           case Mon => 4
            case Fabian => 10
          }
 
-       assertTrue(GuruExperience(???)==7)
+       assertTrue(guruYearsOfExperience(???)==4)
      }
 
 
 
 
    }
+
+
 
 
