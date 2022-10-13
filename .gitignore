@@ -3,3 +3,5 @@ out
 .bsp
 .metals
 .bloop
+
+.DS_Store
