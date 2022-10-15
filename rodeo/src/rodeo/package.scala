@@ -82,4 +82,7 @@ package object rodeo {
     }
   }
 
+  object Int {
+    def ??? : Int = Predef.???
+  }
 }
