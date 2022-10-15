@@ -20,7 +20,7 @@ object Sequences extends Chapter {
 
   Exercise("head & tail") {
     val sequence: Seq[Int] = Seq(1, 2, 3, 7)
-    assertTrue(sequence.head == ???)
+    assertTrue(sequence.head == Int.???)
     assertTrue(sequence.tail == ???)
     assertTrue(sequence.tail.tail == ???)
   }
@@ -29,7 +29,7 @@ object Sequences extends Chapter {
   // In production code the headOption method should be used instead.
 
   Exercise("headOption") {
-    // In Scla we can construct an empty list using `Nil`.
+    // In Scala we can construct an empty list using `Nil`.
 
     val sequence: Seq[Int] = Nil
 
@@ -57,7 +57,7 @@ object Sequences extends Chapter {
   Exercise("index") {
     val smallPrimes: Seq[Int] = Seq(2, 3, 5, 7)
     val smallSquares: Seq[Int] = ???
-    assertTrue(smallPrimes.indexOf(7) == ???)
+    assertTrue(smallPrimes.indexOf(7) == Int.???)
     assertTrue(smallSquares.indexOf(4) == 1)
   }
 
@@ -97,9 +97,9 @@ object Sequences extends Chapter {
 
   Exercise("Pattern match") {
     val Seq(one, two): Seq[Int] = Seq(1, 2)
-    assertTrue(one == 1, two == ???)
+    assertTrue(one == 1, two == Int.???)
     val head :: tail = Seq(1, 3, 5, 7)
-    assertTrue(head == ???, tail == ???)
+    assertTrue(head == Int.???, tail == ???)
   }
 
   // In the following exercises we will introduce others ways of constructing a Sequence in Scala.
@@ -249,7 +249,7 @@ object Sequences extends Chapter {
     val y: Seq[Int] = Seq(1, 2, 3, 4, 5)
     val product = y.fold(1)((x, y) => x * y)
     val sum = y.fold(???)((x, y) => x + y)
-    assertTrue(product == ???)
+    assertTrue(product == Int.???)
     assertTrue(sum == 15)
   }
 
