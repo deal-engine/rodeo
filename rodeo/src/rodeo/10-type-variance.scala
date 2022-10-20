@@ -1,6 +1,97 @@
 package rodeo
 
-object TypeVariance extends App {
+import zio.test._
+object TypeVariance extends Chapter {
+
+  /* In general terms, the mantra to understand variance is the following:
+      - If you produce a type T, you are covariant (+T)
+      - If you consume a type T, you are contravariant (-T)
+      - If you consume and produce a type T, you are invariant (T)
+   */
+
+  trait RealNumber extends Double
+  trait IrrationalNumber extends RealNumber
+  trait FractionalNumber extends RealNumber
+  trait NaturalNumber extends FractionalNumber
+
+  implicitly[FractionalNumber <:< RealNumber]
+  implicitly[NaturalNumber <:< RealNumber]
+  implicitly[NaturalNumber <:< FractionalNumber]
+
+  Exercise("Covariance") {
+    trait Source[+A] {
+      def generate: A
+    }
+
+    implicitly[Source[FractionalNumber] <:< Source[RealNumber]]
+    implicitly[Source[NaturalNumber] <:< Source[RealNumber]]
+
+    val naturalNumberGenerator: Source[NaturalNumber] = ???
+    val fractionalNumberGenerator: Source[FractionalNumber] = naturalNumberGenerator
+    val realNumberGeneratorA: Source[RealNumber] = naturalNumberGenerator
+    val realNumberGeneratorB: Source[RealNumber] = fractionalNumberGenerator
+
+
+
+    def incrementReal(number: RealNumber): RealNumber = ???
+
+    val realNumberA: RealNumber = incrementReal(realNumberGeneratorA.generate)
+    val realNumberB: RealNumber = incrementReal(naturalNumberGenerator.generate)
+
+    def incrementNatural(number: NaturalNumber): NaturalNumber = ???
+
+//    val realNumberA = incrementNatural(realNumberGenerator.generate)
+    val naturalNumberB: NaturalNumber = incrementNatural(naturalNumberGenerator.generate)
+    val naturalNumberC: RealNumber = incrementNatural(naturalNumberGenerator.generate)
+
+    def incrementGeneric[A <: RealNumber](number: A): A = ???
+
+    val genericNumberA: RealNumber = incrementGeneric(realNumberGeneratorA.generate)
+    val genericNumberB: NaturalNumber = incrementGeneric(naturalNumberGenerator.generate)
+    val genericNumberC: RealNumber = incrementGeneric(naturalNumberGenerator.generate)
+
+    assertTrue(true)
+  }
+
+  Exercise("Contravariance") {
+    trait Sink[-A] {
+      def consume(a: A): Unit
+    }
+
+    implicitly[Sink[RealNumber] <:< Sink[NaturalNumber]]
+
+    val naturalNumber: NaturalNumber = ???
+    val realNumber: RealNumber = naturalNumber
+
+    val realNumberConsumer: Sink[RealNumber] = ???
+    val naturalNumberConsumer: Sink[NaturalNumber] = realNumberConsumer
+
+    // TODO
+    trait Validator[-A] {
+      def validate(a: A): Boolean
+    }
+
+    assertTrue(true)
+  }
+
+  Exercise("Invariance") {
+    trait Pipe[A] {
+      def transform(a: A): A
+    }
+
+    assertTrue(true)
+  }
+
+  Exercise("Mix of everything") {
+    trait Stream[-A, B, +C] {
+      def consume(a: A): Unit
+      def generate: C
+      def transform(b: B): B
+
+    }
+
+    assertTrue(true)
+  }
 
 //  sealed trait Vampiro
 //  sealed trait Ave
@@ -14,9 +105,6 @@ object TypeVariance extends App {
 //
 //  val patolin: PatitoVampiro = new Patito with Vampiro {}
 //  val dracula: HumanoVampiro = new Humano with Vampiro {}
-//
-//  // Si un tipo +T se produce es covariante (eg como ret de funciones)
-//  // Si un tipo -T se consume es contravariante (eg como arg de funciones)
 //
 //  val todosLosVampiros: Seq[Vampiro] = Seq(patolin, dracula)
 //
