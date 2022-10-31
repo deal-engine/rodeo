@@ -13,7 +13,8 @@ object RodeoSpec extends ZIOSpecDefault {
         suite("Tuples")(Tuples.exercises),
         suite("Options")(Options.exercises),
         suite("Sequences")(Sequences.exercises),
-        suite("Function")(Functions.exercises)
+        suite("Function")(Functions.exercises),
+        suite("Implicits")(Implicits.exercises)
       ) @@ sequential @@ failFast
     ).provideLayerShared(Latch.live)
 

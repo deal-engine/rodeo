@@ -85,4 +85,7 @@ package object rodeo {
   object Int {
     def ??? : Int = Predef.???
   }
+  object types {
+    type ??? = Nothing
+  }
 }
