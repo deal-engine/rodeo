@@ -13,9 +13,7 @@ object EitherAndTry extends Chapter {
   Exercise("Try constructor") {
     assertTrue(Try(7) == Success(???))
 
-    // Delete the following line if you can't find the answer.
-
-    assertTrue(Try(10 / 0).getClass == ???)
+    assertTrue(Try(10 / 0).isFailure == ???)
   }
 
   Exercise("Books") {
@@ -41,32 +39,16 @@ object EitherAndTry extends Chapter {
     assertTrue(bookRecomendation(true, true) == ???)
   }
 
-// To find a solution of the quadratic equation ax^2+bx+c=0 we only need to use the formula  x = (-b + sqrt(b^2-4ac))/2a.
-
-  Exercise("Equation") {
-    def quadraticEquationSolver(
-        a: Double,
-        b: Double,
-        c: Double
-    ): Try[Double] = {
-      def discriminant(a: Double, b: Double, c: Double): Double =
-        Math.pow(b, 2) - 4 * a * c
-      if (discriminant(a, b, c) >= 0)
-        Success((-b + Math.sqrt(discriminant(a, b, c))) / 2 * a)
-      else if (a == 0)
+  Exercise("SquareRootTry") {
+    def sqrt(x: Double): Try[Double] =
+      if (x < 0)
         Failure(
-          new IllegalArgumentException("This is not a quadratic equation")
+          new IllegalArgumentException("Negative numbers don't have a square root in the real numbers")
         )
-      else
-        Failure(
-          new IllegalArgumentException(
-            "This equations does not have a solution in the real numbers"
-          )
-        )
-    }
+      else Success(Math.sqrt(x))
 
-    assertTrue(quadraticEquationSolver(0, 7, 13) == ???)
-    assertTrue(quadraticEquationSolver(???, ???, ???) == Success(Math.sqrt(2)))
+    assertTrue(sqrt(4) == Success(???))
+    assertTrue(sqrt(-1).isSuccess == ???)
   }
 
   Exercise("Party") {
@@ -95,14 +77,18 @@ object EitherAndTry extends Chapter {
 
   }
 
-  // We can define functional methods in Try[A] like map, filter and flatmap. This methods behave in almost the same way as they do in the case of Options.
-
   Exercise("map method on Try") {
+
+    // We can define functional methods in Try[A] like map, filter and flatmap.
+    // This methods behave in almost the same way as they do in the case of
+    // Options.
+
     val names = List(
       Success("David"),
       Success("Vic"),
       Success("Fabian"),
-      Failure(new IllegalArgumentException("Andrew"))
+      Failure(new IllegalArgumentException("Andrew")),
+      Failure(new IllegalArgumentException("Iván"))
     )
     val namesOffice = names.map {
       case Failure(name) => "Lacayo rebelde"
@@ -113,7 +99,7 @@ object EitherAndTry extends Chapter {
   }
 
   // We will now introduce the `Either[A,B]` type.
-  // An instance of the `Either[A,B]`type is either an instance of type A or an instance of type B. In mathematical terms `Either[A,B]` is the disjoint union of A and B.
+  // An instance of the `Either[A,B]` type is either an instance of type A or an instance of type B. In mathematical terms `Either[A,B]` is the disjoint union of A and B, it is defined as a sum type.
   // `Either` can be used in cases where a computation could return two different types depending on a certain condition imposed in the input.
   // The `Either[A,B]` type is more general than the `Try[A]` type. Try[A] = Either[Failure[A],Success[A]]`.
   // One difference in the case of exception handling between Try and Either is that by using Either we are not forced to represent failure by a wrapped instance of the Throwable class.
@@ -130,7 +116,7 @@ object EitherAndTry extends Chapter {
     assertTrue(numberOfTacos(80, false) == ???)
   }
 
-  Exercise("SquareRoot") {
+  Exercise("SquareRootEither") {
     def sqrt(x: Double): Either[String, Double] =
       if (x < 0)
         Left("Negative numbers don't have a square root in the real numbers")
@@ -157,13 +143,28 @@ object EitherAndTry extends Chapter {
   // We can also define functional methods in `Either[A,B]` like `map` and `flatMap`
   // This functional methods are “right biased”. They will transform the Right case only and leave the Left case fixed.
 
-  Exercise("Map method on Try") {
+  Exercise("Map method on Either") {
 
     assertTrue(Right(7).map((x: Int) => x * x) == ???)
     assertTrue(Left("Peje").map((x: String) => x + x) == ???)
   }
 
-  // TODO `flatMap` excercise.
+  // flatMap is almost like map, but it allows us to chain operations on multiple Either[A, B].
+  
+  Exercise("FlatMap method on Either") {
+
+    case class SomeError()
+    def divInt(x: Int, y: Int): Either[SomeError, Int] = y match {
+      case 0 => Left(SomeError())
+      case _ => Math.floorMod(x, y) == 0 match {
+        case true => Right(Math.floorDiv(x, y))
+        case false => Left(SomeError())
+      }
+    }
+
+    assertTrue(divInt(4,0).flatMap(divInt(_,4)) == ???)
+    assertTrue(divInt(4,2).flatMap(divInt(_,2)) == ???)
+  }
 
   // `Either` has a `filterOrElse` method that transforms a `Right` value into a `Left` value if this value does not satisfy a given predicate(condition).
 
@@ -181,6 +182,18 @@ object EitherAndTry extends Chapter {
         "Not divisible by 2 and 7"
       ) == ???
     )
+  }
+
+  // We can also get an Option[A] directly from a Either[B,A].
+  Exercise("Either to Option") {
+    
+    assertTrue(Right(42).toOption == ???)
+    assertTrue(Left("Evil value >:D").toOption == ???)
+
+    // Or even with try:
+    val some = Try(42 / 0)
+    assertTrue(some.toEither == ???)
+    assertTrue(some.toEither.toOption == ???)
   }
 
 }
