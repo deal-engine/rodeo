@@ -153,7 +153,10 @@ object EitherAndTry extends Chapter {
   
   Exercise("FlatMap method on Either") {
 
-    case class SomeError()
+    case class SomeError() 
+
+    // Safely get the division as an integer if possible.
+    // We get the modulus to ensure that the division is an integer.
     def divInt(x: Int, y: Int): Either[SomeError, Int] = y match {
       case 0 => Left(SomeError())
       case _ => (x % y) == 0 match {
