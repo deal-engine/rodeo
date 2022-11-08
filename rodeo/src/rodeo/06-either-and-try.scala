@@ -68,7 +68,7 @@ object EitherAndTry extends Chapter {
       else
         Failure(
           new IllegalStateException(
-            "Friend ${friend.name} is not a close friend and this is a small party}"
+            s"Friend ${friend.name} is not a close friend and this is a small party}"
           )
         )
     }
@@ -84,15 +84,15 @@ object EitherAndTry extends Chapter {
     // Options.
 
     val names = List(
-      Success("David"),
-      Success("Vic"),
-      Success("Fabian"),
-      Failure(new IllegalArgumentException("Andrew")),
-      Failure(new IllegalArgumentException("Iván"))
+      Success("Apple"),
+      Success("Orange"),
+      Success("Avocado"),
+      Failure(new IllegalArgumentException("Potato")),
+      Failure(new IllegalArgumentException("Carrot"))
     )
     val namesOffice = names.map {
-      case Failure(name) => "Lacayo rebelde"
-      case Success(name) => Success(name + "_" + "DealEngine")
+      case Failure(name) => "Not a fruit!"
+      case Success(name) => Success(name + " is a fruit.")
     }
 
     assertTrue(namesOffice(1) == ???)
@@ -146,7 +146,7 @@ object EitherAndTry extends Chapter {
   Exercise("Map method on Either") {
 
     assertTrue(Right(7).map((x: Int) => x * x) == ???)
-    assertTrue(Left("Peje").map((x: String) => x + x) == ???)
+    assertTrue(Left("Hwllo").map((x: String) => x + x) == ???)
   }
 
   // flatMap is almost like map, but it allows us to chain operations on multiple Either[A, B].
@@ -156,7 +156,7 @@ object EitherAndTry extends Chapter {
     case class SomeError()
     def divInt(x: Int, y: Int): Either[SomeError, Int] = y match {
       case 0 => Left(SomeError())
-      case _ => Math.floorMod(x, y) == 0 match {
+      case _ => (x % y) == 0 match {
         case true => Right(Math.floorDiv(x, y))
         case false => Left(SomeError())
       }
