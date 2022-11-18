@@ -77,12 +77,13 @@ object Options extends Chapter {
     assertTrue(myOption.contains(???))
     // forall returns true when the predicate is applied to the option's value
     // similar to .contains, but caution: forall will return true when empty
-    assertTrue( myOption.forall(_ * 2 == 4)  )
+    assertTrue( myOption.forall(???)  )
     // map allows to transform the Some value into another option
     assertTrue(myOption.map(_.toString) == ??? )
     assertTrue(myOption.map(_ == 2) == ??? )
-    // flatMap is slightly different: returns the transformed value but without the Some() that contains it
-    assertTrue(myOption.flatMap(???) == "The number is 12" )
+    // flatMap is slightly different: returns the transformed value but expects the developer to put the
+    // Some() wrapper (or None if needed)
+    assertTrue(myOption.flatMap(???) == ??? )
   }
 
   Exercise("Pattern match with Options") {

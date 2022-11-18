@@ -99,6 +99,7 @@ object Sequences extends Chapter {
     val Seq(one, two): Seq[Int] = Seq(1, 2)
     assertTrue(one == 1, two == Int.???)
     val head :: tail = Seq(1, 3, 5, 7)
+    // hint: careful on tail data type
     assertTrue(head == Int.???, tail == ???)
   }
 
@@ -134,6 +135,11 @@ object Sequences extends Chapter {
 
   }
 
+  /*
+    A normal sequence cannot be updated with new values even when using .updated,
+    instead it returns a new sequence with the changes.
+    Immutability is a common pattern in functional programming.
+  */
   Exercise("Immutability") {
     val numbers: Seq[Int] = Seq(1, 2)
     val moreNumbers = numbers.updated(0, 3)
@@ -213,7 +219,7 @@ object Sequences extends Chapter {
       x % 5 == 0
     })
     assertTrue(resultOption == ???)
-    assertTrue(None == ???)
+    assertTrue(resultNone == ???)
   }
 
   /*
@@ -274,10 +280,14 @@ object Sequences extends Chapter {
     }
 
     assertTrue(numbersOpts2 == ???)
+    // the flatten method will try to create a single collection with the
+    // most inner elements. In this case, with the values within Some()
     assertTrue(numbersOpts2.flatten == ???)
 
   }
 
+  // The previous exercise can be compated by using the .flatMap function
+  // which is essentially map + flatten
   Exercise("transforming options with flatMap") {
 
     val numbersOpt = List(Some(5), Some(7), None)
@@ -285,7 +295,7 @@ object Sequences extends Chapter {
       case None    => None
       case Some(n) => Some(n * 2)
     }
-
+    // what happened previously when .map and .flatten were used?
     assertTrue(numbersOpts2 == ???)
   }
 
