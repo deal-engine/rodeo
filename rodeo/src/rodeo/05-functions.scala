@@ -310,11 +310,12 @@ object Functions extends Chapter {
       val result = runNTimes(3) { number =>
         s"Num is: ${number}"
       }
-      result == Seq("Num is: 0", "Num is: 1", "Num is 2")
+      result == Seq("Num is: 0", "Num is: 1", "Num is: 2")
     }
   }
 
   Exercise("Functions with variable arguments") {
+    // put a * symbol next to a data type to declare as a VarArg
     def concatenate(values: String*) = {
       values.mkString("-")
     }
@@ -331,6 +332,7 @@ object Functions extends Chapter {
   }
 
   Exercise("Recursive functions") {
+    // In scala recursive functions are the preferred way to implement loop logic.
     def factorial(number: Int): Int = {
       number match {
         case 1 => 1
@@ -372,30 +374,45 @@ object Functions extends Chapter {
       mathSandbox(1 / 0) == None
     )
 
-    // TODO Implement a function that accepts a call-by-name arguments that
-    // ............................................
+    // if this function gets evaluated, this exercise will never pass
+    def bomb(): Unit = throw new Exception("Boom! the bad function was evaluated/executed")
 
+    // TODO Enable this function to take the bomb as a call-by-name argument
+    def extremeFunction(goodEnding: Boolean, badEnding: Unit): Boolean = ???
+    // will the bomb() function will be evaluated?
+    assertTrue(extremeFunction(true, bomb() ) )
   }
 
   Exercise("Generic functions") {
-    // TODO Generic functions are...
+    // Generic functions enable an additional customization layer for the parameters by specifying what features
+    //  should have instead of defining an explicit type
     def whatIsThisValue[A](value: A): String = {
       s"Your value is ${value}"
     }
     assertTrue(whatIsThisValue(20) == "Your value is 20")
     assertTrue(whatIsThisValue(()) == "Your value is ()")
-    // TODO Exercise
+    // TODO Implement a .getClass function wrapper, that accepts a generic-type argument and converts it to String
+    //  hint: change the Any type and declare a generic type instead
+    def classer(a: Any): String = ???
+
+    assertTrue(classer(2) == "class java.lang.Integer")
+    assertTrue(classer(true) == "class java.lang.Boolean")
+    assertTrue(classer("My string") == "class java.lang.String")
   }
 
   Exercise("Implicit arguments") {
-    // TODO Implicit arguments are...
-    // CURRIED: Also perhaps for implicits???
+    // Implicit arguments are automatically passed to functions that ask for them
+    //  scala will try to look for implicit values that match the arg type
     def greeting(name: String)(implicit prefix: String): String = {
-      s"${prefix} name"
+      s"${prefix} ${name}"
     }
     implicit val prefix: String = "Mr."
     assertTrue(greeting("Smith") == "Mr. Smith")
 
-    // TODO Exercise
+    // TODO modify implicitAdder to accept an implicit Int argument and declare said value below
+    def implicitAdder(x: Int) = x+1
+
+    // delete the 10 arg to let the implicit value take effect
+    assertTrue(implicitAdder(10) == 21)
   }
 }
