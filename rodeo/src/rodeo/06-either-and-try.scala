@@ -11,12 +11,14 @@ object EitherAndTry extends Chapter {
   // For practical purposes the main difference between `None` and `Failure` is that `Failure` is able to provide insight into the cause of the "failure".
 
   Exercise("Try constructor") {
+    // The Try constructor can build a valid Success if given a valid expression, otherwise, it will return a Failure
     assertTrue(Try(7) == Success(???))
-
+    // what happens if a number is divided by 0? will it throw an specific exception?
     assertTrue(Try(10 / 0).isFailure == ???)
   }
 
   Exercise("Books") {
+    // This method will try to recommend the user a book based on his/her tastes, but it will fail if the if tastes are contradictory
     def bookRecomendation(
         likesMath: Boolean,
         likesComputerScience: Boolean
@@ -34,24 +36,28 @@ object EitherAndTry extends Chapter {
           )
         )
       else Success("The emperors new mind")
-
+    // what happens if you don't like math, but you like CS?
     assertTrue(bookRecomendation(false, true) == ???)
     assertTrue(bookRecomendation(true, true) == ???)
   }
 
   Exercise("SquareRootTry") {
+    // This method will try to calculate the square root of a number
     def sqrt(x: Double): Try[Double] =
       if (x < 0)
         Failure(
           new IllegalArgumentException("Negative numbers don't have a square root in the real numbers")
         )
       else Success(Math.sqrt(x))
-
+    // TODO easy, right?
     assertTrue(sqrt(4) == Success(???))
+    // what happens if the user tries to find the square root of a negative number?
     assertTrue(sqrt(-1).isSuccess == ???)
   }
 
   Exercise("Party") {
+    // Sometimes you have to make tough decisions when having a party because the number of people must be limited
+    // when said party is small
     case class Friend(name: String, isClose: Boolean)
 
     val ana = Friend("Ana", true)
@@ -68,11 +74,11 @@ object EitherAndTry extends Chapter {
       else
         Failure(
           new IllegalStateException(
-            s"Friend ${friend.name} is not a close friend and this is a small party}"
+            s"Friend ${friend.name} is not a close friend and this is a small party"
           )
         )
     }
-
+    // will ana get invited to the christmas party, considering the party conditions?
     assertTrue(invitation(ana, christmasParty) == ???)
 
   }
@@ -91,7 +97,7 @@ object EitherAndTry extends Chapter {
       Failure(new IllegalArgumentException("Carrot"))
     )
     val namesOffice = names.map {
-      case Failure(name) => "Not a fruit!"
+      case Failure(_) => "Not a fruit!"
       case Success(name) => Success(name + " is a fruit.")
     }
 
@@ -106,17 +112,22 @@ object EitherAndTry extends Chapter {
   // We can understand `Either[A,B]` intuitively as a choice between left and right. For exception handling, left represents failure while right represents success.
 
   Exercise("Tacos") {
+    // This function tries to calculate the optimal number of tacos you can eat based on your weight and physical condition
+    // you may consume a greater amount of tacos if you are in a good condition (just a recommendation).
     def numberOfTacos(
         weight: Double,
         exercised: Boolean
     ): Either[String, Double] =
       if (weight < 0) Left("This is not a valid weight")
       else Right(if (exercised) 2 * (weight / 20) else weight / 20)
-
+    // what? negative mass?
+    assertTrue(numberOfTacos(-1, false) == ???)
     assertTrue(numberOfTacos(80, false) == ???)
+    assertTrue(numberOfTacos(80, true) == ???)
   }
 
   Exercise("SquareRootEither") {
+    // Based on the previous Square root exercise, this is the Either-adapter version, sho it should be pretty similar.
     def sqrt(x: Double): Either[String, Double] =
       if (x < 0)
         Left("Negative numbers don't have a square root in the real numbers")
@@ -130,6 +141,8 @@ object EitherAndTry extends Chapter {
   // Either[A,B] type can be useful in other cases than exception handling.
 
   Exercise("MixedDuplicator") {
+    // This method can candle String and Double multiplications (* operators) although they might behave different
+    // from each other
     def mixedDuplicator(x: Either[String, Double]): Either[String, Double] = {
       x match {
         case Left(x)  => Left(x * 2)
@@ -137,6 +150,7 @@ object EitherAndTry extends Chapter {
       }
     }
     assertTrue(mixedDuplicator(Right(7)) == ???)
+    // just because you're correct doesn't mean you're right
     assertTrue(mixedDuplicator(Left("Hi")) == ???)
   }
 
@@ -146,7 +160,8 @@ object EitherAndTry extends Chapter {
   Exercise("Map method on Either") {
 
     assertTrue(Right(7).map((x: Int) => x * x) == ???)
-    assertTrue(Left("Hwllo").map((x: String) => x + x) == ???)
+    // Remember that .map is right-biased
+    assertTrue(Left("Hello").map((x: String) => x + x) == ???)
   }
 
   // flatMap is almost like map, but it allows us to chain operations on multiple Either[A, B].
@@ -172,13 +187,14 @@ object EitherAndTry extends Chapter {
   // `Either` has a `filterOrElse` method that transforms a `Right` value into a `Left` value if this value does not satisfy a given predicate(condition).
 
   Exercise("filterOrElse") {
-
+    // is 14 divisible by 2 and 7?
     assertTrue(
       Right(14).filterOrElse(
         x => (x % 2 == 0 && x % 7 == 0),
         "Not divisible by 2 and 7"
       ) == ???
     )
+    // what about 21? would that transform it to a Left?
     assertTrue(
       Right(21).filterOrElse(
         x => (x % 2 == 0 && x % 7 == 0),
@@ -189,8 +205,9 @@ object EitherAndTry extends Chapter {
 
   // We can also get an Option[A] directly from a Either[B,A].
   Exercise("Either to Option") {
-    
+    // Right => Some
     assertTrue(Right(42).toOption == ???)
+    // Left => ???
     assertTrue(Left("Evil value >:D").toOption == ???)
 
     // Or even with try:
