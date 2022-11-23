@@ -1,7 +1,7 @@
 import zio._
 import zio.Console._
 
-type somethingSomething = ???
+val somethingSomething = ???
 
 /* Parser combinators in Scala
  *
@@ -113,6 +113,34 @@ object VeryBasicParser {
    * consumes some strean and either returns an error or returns the
    * expected result (the expected type) with rest of the stream.
    */
+
+  /* Let's try to make a simple parser that matches a character! */
+
+  val charS: Char => Parser[String, String, Char] = c => _ match {
+    case "" => Left("Error")
+    case x if x.head == c => Right(c, x.tail)
+  }
+
+  /* Now it's a great time to introduce combinators, let's make one
+   * that parses zero, one or more times a specified parser. */
+
+  def repeat0S[A](parser: Parser[String, String, A]): Parser[String, String, List[A]] = xs => repeat1S(parser)(xs) match {
+    case Left(value) => Right(List.empty, xs)
+    case Right(value) => Right(value)
+  }
+
+  def repeat1S[A](parser: Parser[String, String, A]): Parser[String, String, List[A]] = xs => parser(xs) match {
+    case Right((y,ys)) => repeat0S(parser)(ys) match {
+      case Right((k,ks)) => Right(y::k,ks)
+      case left => left
+    }
+    case Left(value) => Left(value)
+  }
+
+  /* Excercise: Build a parser that parses 1 or more 'A' */
+  val parseA: Parser[String, String, List[Char]] = ???
+
+  assert(parseA("aaaaHola") == Right(List('a','a','a','a'), "Hola"))
 }
 
 object MyApp extends ZIOAppDefault:
