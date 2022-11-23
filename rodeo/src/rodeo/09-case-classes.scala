@@ -5,8 +5,6 @@ import zio.test.assertTrue
 
 import scala.collection.immutable.List
 
-/**
-  */
 object CaseClasses {
   /*
     Scala Case Classes are good for modeling immutable data. To define a Case Class we need to specify a constructor
@@ -20,21 +18,21 @@ object CaseClasses {
     companion-object which allows destructuring the fields that were used to build an instance.
     4) A copy method is automatically added on each instance that allows an easy way to modify part of an existing
     instance.
-    5) `equals` methods and `hashCode` and other serializable methods are generated automatically for each instance, which
-    means they can be used as keys on HashMaps
+    5) `equals` methods and `hashCode` and other serializable methods are generated automatically for each instance,
+    which means they can be used as keys on HashMaps
  */
 
 
 
-  Exercise("Mentors") {
+  Exercise("People") {
 
     case class PersonaA(name: String, age: Int)
     class PersonaB(name: String, val age: Int)
 
-    val codingMaster = PersonaA.apply("Vic", ???)
-    val bossMaster = PersonaA("David", 33)
-    val mentor = new PersonaB("Fabian", 28)
-    val mentor2 = new PersonaB("Mon", 29)
+    val objects = PersonaA.apply("Alan Kay", 82)
+    val simon = PersonaA("Simon Peyton Jones", 64)
+    val phil = new PersonaB("Phil Wadler", 66)
+    val ruby = new PersonaB("Yukihiro Matsumoto", 57)
 
     assertTrue(??? == 29)
 
@@ -72,12 +70,12 @@ object CaseClasses {
         case Polygon(sides) => ???
 
         /*
-      In this case `getPerimeter` doesn't need to be included as an interface function of the Shape trait.
-      The global function getPerimeter uses pattern matching to handle the possible types of the input.
-      This is only possible because we defined shape as a sealed trait.
-      A sealed trait can be extended only in the same file it is defined.
-      This allows the compiler to check if all the cases are exhausted.
-         */
+        In this case `getPerimeter` doesn't need to be included as an interface function of the Shape trait.
+        The global function getPerimeter uses pattern matching to handle the possible types of the input.
+        This is only possible because we defined shape as a sealed trait.
+        A sealed trait can be extended only in the same file it is defined.
+        This allows the compiler to check if all the cases are exhausted.
+        */
       }
     }
 
@@ -86,7 +84,6 @@ object CaseClasses {
       // To compare two instances of a given case class we only have to compare their values.
       // If two instances have they same values the equality method `==` will return true.
       // This makes case classes lightweight datastructures.
-
 
       case class ScalaBooks(name: String, level: String, numberOfPages: Int)
 
@@ -112,8 +109,8 @@ object CaseClasses {
       A companion Object to a class is an Object with the same name as the class and that is defined in the same file.
       An apply method defined inside a companion Object has an special meaning for the compiler.
       When you instantiate the class Persona by doing `val Ana = Persona("Ana", 34)` the compiler reads this as
-     `val Ana = Persona.apply("Ana", 34)`.
-     */
+      `val Ana = Persona.apply("Ana", 34)`.
+      */
 
       class Persona(name: String, val age: Int)
       object Persona {
@@ -130,7 +127,10 @@ object CaseClasses {
       In order to recover the constructor parameters used to instantiate a class we need an unapply method.
       This method takes an instance of a class and returns an Option of the parameters used to construct this instance.
       It can be thought of as "wrapped" version of the inverse of apply.
-      TODO Explain in a satisfactory manner why unapply is fundamental for pattern matching.
+
+      We do pattern matching by structurally matching the values with their constructors. In order to match those
+      values, we need a way of asking the values used with the constructor. We do this by using the "unapply"
+      method, which gives us the values inside the case class instance.
       */
 
       sealed trait SolidShape {
@@ -182,7 +182,8 @@ object CaseClasses {
     }
 
     // Case classes are endowed with a copy method.
-    // This method allows us to create a new instance of a given case class by "copying" the desired fields from another instance.
+    // This method allows us to create a new instance of a given case class by "copying" the desired fields from
+    // another instance.
 
     Exercise("Copy method") {
 
@@ -196,33 +197,33 @@ object CaseClasses {
 
     Exercise("Enumerations") {
 
-      case class DealEngineScalaGuru(name: String, experience: Int)
+      case class FoodPrices(name: String, price: Int)
 
-      val boss: DealEngineScalaGuru = DealEngineScalaGuru("David", 10)
+      val bestFood: FoodPrices = FoodPrices("Pizza", 10);
 
-      // The definition of our ScalaGurus case class allows us to pass "invalid" constructor arguments.
-      // For example, a DealEngineScalaGuru with name Andrew is clearly not a valid option.
+      // The definition of our FoodPrices case class allows us to pass "invalid" constructor arguments.
+      // For example, a FoodPrices with name FreeBSD is clearly not a valid option.
       // In cases like this an enumeration can be useful.
       // The basic idea of an enumerations is to provide a fixed set of constants.
-      // In this example we want each of this constants to represent a valid choice of an `DealEngineScalaGuru`.
+      // In this example we want each of this constants to represent a valid choice of an `FoodPrices`.
 
 
-      sealed trait Gurus
-      object David extends Gurus
-      object Vic extends Gurus
-      object Fabian extends Gurus
-      object Mon extends Gurus
+      sealed trait Food
+      object Pizza extends Food
+      object Tacos extends Food
+      object Baghette extends Food
+      object Kebab extends Food
 
-      def guruYearsOfExperience(name: Gurus): Int =
+      def foodPrices(name: Food): Int =
         name match {
-          case David => 10
-          case Vic => ??? // You need to research this.
-          case Fabian => 10
-          case Mon => 4
+          case Pizza => 10
+          case Tacos => ??? // You need to research this.
+          case Baghette => 10
+          case Kebab => 4
         }
 
 
-      assertTrue(guruYearsOfExperience(???) == 4)
+      assertTrue(foodPrices(???) == 4)
     }
 
   }
