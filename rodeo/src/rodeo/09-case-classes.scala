@@ -34,7 +34,7 @@ object CaseClasses {
     val phil = new PersonaB("Phil Wadler", 66)
     val ruby = new PersonaB("Yukihiro Matsumoto", 57)
 
-    assertTrue(??? == 29)
+    assertTrue(??? == 64)
 
   }
 
