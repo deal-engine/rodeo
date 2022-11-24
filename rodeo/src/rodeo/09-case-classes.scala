@@ -20,9 +20,7 @@ object CaseClasses {
     instance.
     5) `equals` methods and `hashCode` and other serializable methods are generated automatically for each instance,
     which means they can be used as keys on HashMaps
- */
-
-
+   */
 
   Exercise("People") {
 
@@ -34,8 +32,7 @@ object CaseClasses {
     val phil = new PersonaB("Phil Wadler", 66)
     val ruby = new PersonaB("Yukihiro Matsumoto", 57)
 
-    assertTrue(??? == 64)
-
+    assertTrue(64 == Int.???)
   }
 
   Exercise("Perimeter") {
@@ -55,12 +52,6 @@ object CaseClasses {
       override def getPerimeter: Double = sides.sum
     }
 
-    val circle = Circle(1)
-    val square = Polygon(List(1, 1, 1, 1))
-
-    assertTrue(circle.getPerimeter == ???)
-    assertTrue(square.getPerimeter == ???)
-
     // The correct definition of  `getPerimeter` for these two shapes is defined inside the corresponding case class.
     // Another way to define an operation that could handle both cases is by using pattern matching.
 
@@ -75,9 +66,15 @@ object CaseClasses {
         This is only possible because we defined shape as a sealed trait.
         A sealed trait can be extended only in the same file it is defined.
         This allows the compiler to check if all the cases are exhausted.
-        */
+         */
       }
     }
+
+    val circle = Circle(1)
+    val square = Polygon(List(1, 1, 1, 1))
+
+    assertTrue(circle.getPerimeter == Int.???) &&
+    assertTrue(square.getPerimeter == Int.???)
   }
 
   Exercise("Equals") {
@@ -97,9 +94,8 @@ object CaseClasses {
     val bookDummies: ScalaBooks =
       ScalaBooks("Scala for dummies ", "dummy", 420)
 
-    assertTrue(book == ???)
+    assertTrue(book == ???) &&
     assertTrue(book != ???)
-
   }
 
   Exercise("Instantiating classes without `new`") {
@@ -111,7 +107,7 @@ object CaseClasses {
     An apply method defined inside a companion Object has an special meaning for the compiler.
     When you instantiate the class Persona by doing `val Ana = Persona("Ana", 34)` the compiler reads this as
     `val Ana = Persona.apply("Ana", 34)`.
-    */
+     */
 
     class Persona(name: String, val age: Int)
     object Persona {
@@ -132,7 +128,7 @@ object CaseClasses {
     We do pattern matching by structurally matching the values with their constructors. In order to match those
     values, we need a way of asking the values used with the constructor. We do this by using the "unapply"
     method, which gives us the values inside the case class instance.
-    */
+     */
 
     sealed trait SolidShape {
       def getVolume: Double
@@ -150,7 +146,7 @@ object CaseClasses {
     }
 
     class SquarePyramid(val sideLength: Double, val height: Double)
-      extends SolidShape {
+        extends SolidShape {
       override def getVolume: Double = (sideLength * sideLength * height) / 3
     }
 
@@ -174,10 +170,9 @@ object CaseClasses {
       }
     }
 
-
     val pyramid = SquarePyramid(3, 7)
 
-    assertTrue(Sphere.apply(3) == ???) // Don't use the `new` keyword.
+    assertTrue(Sphere.apply(3) == ???) && // Don't use the `new` keyword.
     assertTrue(SquarePyramid.unapply(pyramid) == ???)
 
   }
@@ -192,9 +187,7 @@ object CaseClasses {
     val ObiWan = StarWarsJedi("Obi-Wan Kenobi", false)
     val ObiWanGhost = ObiWan.copy(forceGhost = ???)
     assertTrue(ObiWanGhost.forceGhost == ???)
-
   }
-
 
   Exercise("Enumerations") {
 
@@ -208,7 +201,6 @@ object CaseClasses {
     // The basic idea of an enumerations is to provide a fixed set of constants.
     // In this example we want each of this constants to represent a valid choice of an `FoodPrices`.
 
-
     sealed trait Food
     object Pizza extends Food
     object Tacos extends Food
@@ -217,14 +209,14 @@ object CaseClasses {
 
     def foodPrices(name: Food): Int =
       name match {
-        case Pizza => 10
-        case Tacos => ??? // You need to research this.
+        case Pizza    => 10
+        case Tacos    => ??? // You need to research this.
         case Baghette => 10
-        case Kebab => 4
+        case Kebab    => 4
       }
 
+    assertTrue(4 == foodPrices(???))
 
-    assertTrue(foodPrices(???) == 4)
   }
 
 }
