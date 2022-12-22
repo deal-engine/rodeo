@@ -1,0 +1,7 @@
+{
+  "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
+  "files.watcherExclude": {
+    "**/target": true
+  },
+  "metals.millScript": "mill"
+}
