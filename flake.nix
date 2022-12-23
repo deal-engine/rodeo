@@ -15,6 +15,10 @@
       ];
       perSystem = { pkgs, lib, config, system, ... }: {
         mission-control.scripts = {
+          readme = {
+            description = "Read the readme.";
+            exec = "${lib.getExe pkgs.glow} README.md";
+          };
           tests = {
             description = "Run the Rodeo tests.";
             exec = "mill -w rodeo.test";
@@ -22,6 +26,19 @@
           editor = {
             description = "Run a preconfigured VSCode.";
             exec = "code .";
+          };
+          editor-setup = {
+            description = "Setup the editor.";
+            exec = ''
+              rm -rf .bsp/ .metals/ .bloop/ out/
+              mill mill.bsp.BSP/install
+              echo "Done 🎉"
+              echo "Run the editor for the first time and then open the Command Palette"
+              echo "with Shift+Cmd+P, then search for «switch build server»; when asked"
+              echo "select mill-bsp as your build server, don't use the other option!"
+              echo "You should do this only every time that you execute the editor-setup."
+              echo "Have fun! 🐴"
+            '';
           };
         };
         devShells.default =
