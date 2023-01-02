@@ -9,6 +9,17 @@ common functional idioms.
 Along the way you will find some Exercises, requiring you to change some
 code in order to practice some concepts.
 
+Quickstart
+----------
+
+- Install Nix
+- Enable Flakes support
+- (Optional) Install direnv
+
+If using direnv: Allow this repository. Else: Enter the Nix Shell using `nix develop`.
+
+You will see a menu with options available for Rodeo.
+
 Installation
 ------------
 
