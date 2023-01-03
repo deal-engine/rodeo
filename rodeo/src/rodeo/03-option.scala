@@ -60,26 +60,37 @@ object Options extends Chapter {
   }
 
   Exercise("Define an empty option of a specific type") {
-    //
+    // Hint: .isEmpty method documentation contains the definition of "empty"
     val emptyMaybeString: Option[String] = ???
     assertTrue(emptyMaybeString.isEmpty)
   }
 
   Exercise("Multiple Option operators") {
-    Option(1)
-    // exists
-    // contains
-    // forall -> regresa true cuando es Empty
-    // map
-    // flatMap
-    val maybeName = Option("raka")
-    // TODO
-    assertTrue(true)
+    // The Option constructor will create Some if the argument is not null
+    val myOption = Option(2)
+    // .exists returns true if the option is Some(x) and if the inner value fulfills the
+    // defined bollean expression
+    // Place any predicate that the previous option could fulfill:
+    assertTrue(myOption.exists(???))
+    // .contains allow us to extract the inner value within Some and perform a direct equivalence
+    // comparison. If None, it will return false
+    assertTrue(myOption.contains(???))
+    // forall returns true when the predicate is applied to the option's value
+    // similar to .contains, but caution: forall will return true when empty
+    assertTrue( myOption.forall(???)  )
+    // map allows to transform the Some value into another option
+    assertTrue(myOption.map(_.toString) == ??? )
+    assertTrue(myOption.map(_ == 2) == ??? )
+    // flatMap is slightly different: returns the transformed value but expects the developer to put the
+    // Some() wrapper (or None if needed)
+    assertTrue(myOption.flatMap(???) == ??? )
   }
 
   Exercise("Pattern match with Options") {
+    // define an option that will satisfy the subsequent match:
     val maybeName: Option[String] = ???
-
+    // The options can be compared more in depth with a match statement,
+    // defining which are the valid cases
     maybeName match {
       case Some(name) =>
         assertTrue(name == "raka")
