@@ -2,6 +2,7 @@ package rodeo
 
 import zio.ZEnvironment
 import zio.test._
+import scala.util.Random
 
 object Implicits extends Chapter {
 
@@ -22,103 +23,140 @@ object Implicits extends Chapter {
       s"${prefix} ${name} ${lastName}"
     }
 
-    // TODO ???
     assertTrue(greeting("Alice", "Gutierrez") == "Mrs. Alice Gutierrez")
+    assertTrue(greeting("Mariana", "Zimmerman") == "CHANGE ME!")
   }
 
-  // In the above exercises the compiler was able to handle the implicit input because there was only one `implicit val` defined.
+  // In the above exercises the compiler was able to handle the implicit input because there was only
+  // one `implicit val` defined.
 
   Exercise("Implicit parameters ambigouous") {
-    // TODO See how can we compile this
-    // implicit val two: Double = 2.0
+    implicit val two: Double = 2.0
     implicit val three: Double = 3.0
 
-    // This is because we have two implicits values defined and the compiler can't decide which of this values to use.
-    // Remove the necessary code in order to satisfy the "assertTrue" condition and make the compiler happy.
+    // As we have two implicits values defined, the compiler can't decide which of this values to use.
+    // We have to explicitly give those values.
 
     def add(numA: Double)(implicit numB: Double): Double = numA + numB
 
-    // TODO ???
-    assertTrue(add(1) == 4)
+    // Explicity passing the implicit variable `two`.
+    assertTrue(add(1)(two) == 3.0)
+    assertTrue(add(5)(???) == 9.0) // <- Change this.
   }
 
   Exercise("Implicit implicits") {
     implicit val three: Double = 3.0
 
     def add(numA: Double): Double = {
+      // `implicitly[A]` allows us to get a value if there is an existing implicit variable of the same
+      // type `A`.
       val numB: Double = implicitly[Double]
       numA + numB
     }
 
-    // TODO ???
-    assertTrue(add(1) == 4)
+    assertTrue(add(1) == Int.???) // Change Int.??? giving the correct value as defined by the function above.
   }
 
   Exercise("Implicit parameters adjust") {
-    // In certain cases we might want to implement a function whose exact output is known to us but we are unable to
-    // calculate it exactly.
-    // For example, in order to approximate sqrt(2) we need to use to use newtons method. This method allows us to
-    // calculate sqrt(2) to arbitrary precision, but we never get the exact answer.
-    // In cases like this implicit parameters can be useful. Using an implicit parameter we can define the required
-    // level of precision and forget about this input when calling the sqrt function.
+    // Implicit parameters can be very useful for context-dependend behaviour. We can do a lot of things
+    // with it, such as definind a default behaviour for a function or giving instances of certain elements
+    // required for execution of actions.
+    // In this example we are going to use it to optimize a search function (if possible) over integers.
 
-    implicit val precision: Double = 0.00001
+    type Ix = Int
 
-    def sqrt(x: Double)(implicit precision: Double): Double = {
-      def sqrtIter(guess: Double): Double =
-        if (isGoodEnough(guess)) guess
-        else sqrtIter(improve(guess))
-
-      def improve(guess: Double) =
-        (guess + x / guess) / 2
-
-      def isGoodEnough(guess: Double) =
-        (guess * guess - x).abs < precision
-
-      sqrtIter(1.0)
+    def search(xs: List[Int])(v: Int)(implicit mid: Ix => Ix => Option[Ix]): Option[Ix] = {
+      def go(l: Ix, r: Ix): Ix = mid(l)(r) match {
+        case None => r
+        case Some(m) => (v == xs(m)) match {
+          case true => go(l, m)
+          case false => go(m, r)
+        }
+      }
+      
+      xs.isEmpty match {
+        case true => None
+        case false => Some(go(0, xs.length))
+      }
     }
 
-    // TODO Change exercise for something less math-y and more programm-y
-    assertTrue(
-      sqrt(2)(1) == 1.5
-    ) &&
-    assertTrue(sqrt(2) - sqrt(2)(1) < 1)
+    // All our different methods for mid search
+    object SearchMethods {
+      def binary(l: Ix)(r: Ix): Option[Ix] = (r - l > 1) match {
+        case true => Some((l+r) / 2)
+        case false => None
+      }
 
+      def linear(l: Ix)(r: Ix): Option[Ix] = (r - l > 1) match {
+        case true => Some(l + 1)
+        case false => None
+      }
+
+      implicit val default: Ix => Ix => Option[Ix] = (a: Ix) => (b: Ix) => linear(a)(b)
+    }
+
+    // Default behaviour and optional behaviour.
+    import SearchMethods.{default, binary}
+
+    // We have two lists:
+    val sortedList   = List(1,2,3,4,5,6,7,8,9)
+    val unsortedList = List(2,4,8,6,3,1,7,9,5)
+
+    // Without specifying the implicit parameter, we have the default (linear) search:
+    assertTrue(search(sortedList)(4) == Some(3))
+    assertTrue(search(unsortedList)(4) == Some(1))
+    // This works well, but we have a worst complexity of O(n).
+    
+    // As we know that `sortedList` is sorted, we can do binary search over it.
+    assertTrue(search(sortedList)(4)(binary) == Some(3))
+    // Which gives us a worst case complexity of O(log n).
+
+    // C.S. nerd note: both have a best case complexity of Ω(1) since it's possible to get the value in
+    // constant time.
+
+    // Find an array
+    val xs: List[Int] = ???
+    // such that
+    assertTrue(search(xs)(25) == None)
+    assertTrue(search(xs)(100) == Some(10))
+    assertTrue(search(xs.sorted)(42) == Some(4))
+    // holds.
+    // NOTE: Optimize the search adding the correct implicit where possible.
+
+    // The formal proof for the worst case complexity of both linear and binary search are left as an
+    // optional exercise for the reader.
   }
 
   Exercise("Implicit parameters in a class") {
-    // TODO We dont use this
-    // TODO Come up with the right design pattern
-    case class Integer(value: Int)
-    case class Sum(numA: Int)(implicit numB: Integer) {
-      val result = numA + numB.value
+    // We can also have implicit parameter in class definitions.
+
+    // Let's assume we have a db conenction:
+    case class DBConn() {
+      def executeSQL(action: String) = "I executed SQL!"
     }
 
-    object calculations {
-      implicit val sum: (Int, Int) => Int =
-        (numA, numB) => numA + numB
-
-      implicit val mult: (Int, Int) => Int =
-        (numA, numB) => numA * numB
-    }
-    case class Calculator(numA: Int, numB: Int)(implicit
-        calculation: (Int, Int) => Int
-    ) {
-      val result = calculation(numA, numB)
+    // We can define services that need connection to the db, but we are able to use it implicitly:
+    case class Service(name: String)(implicit dbconn: DBConn) {
+      def doSomething = s"Service ${name} from db: ${dbconn.executeSQL("select idk")}"
     }
 
-    implicit val int = Integer(5)
+    // Let's initialize a db connection:
+    implicit val _dbconn = DBConn()
 
-    import calculations.mult
+    // Now we can build our services:
+    val service1 = Service("one")
+    val service2 = Service("status")
 
-    assertTrue(Sum(1).result == 6) &&
-    // TODO Exercise
-    assertTrue(Calculator(5, 6).result == 30)
+    // Those services have connection to the db!
+    assertTrue(service1.doSomething == "Replace me with the correct output!")
+    assertTrue(service2.doSomething == "Replace me with the correct output!")
   }
 
-  // Implicts can also be used in cases where you want to evaluate a function in an argument that is not of the required type.
-  // Let's say that we have a recursive function that allows to compute the product of all the elements in a given list and we want to apply this function to a set.
-  // We can achieve this by defining an implicit function  that takes a set and returns a list.
+  // Implicts can also be used in cases where you want to evaluate a function in an argument that is
+  // not of the required type.
+  // Let's say that we have a recursive function that allows to compute the product of all the
+  // elements in a given list and we want to apply this function to a set.
+  // We can achieve this by defining an implicit function that takes a set and returns a list.
 
   Exercise("Implicit conversions") {
     def greeting(
@@ -131,57 +169,64 @@ object Implicits extends Chapter {
     )
 
     implicit def stringToSeq(string: String): Seq[String] = Seq(string)
-    // NOTE How greetings is now passing a String, and not a Seq[String] and still works, because of the implicit conversion
+    // NOTE How greetings is now passing a String, and not a Seq[String] and still works, because of
+    // the implicit conversion
     assertTrue(greeting("Max", "Hello") == "Hello, Max")
   }
 
-  Exercise("implicit conversions 2") {
+  Exercise("Implicit conversions 2") {
     case class MexicanPesos(value: Double)
     case class BritishPounds(value: Double)
     implicit def PoundsToPesos(pounds: BritishPounds): MexicanPesos =
       MexicanPesos(pounds.value * 28)
 
-//    def mexicanStore(cash: MexicanPesos): String =
+    def mexicanStore(cash: MexicanPesos): String = s"You have spent ${cash.value} pesos, amigo."
 
-//
-//    assertTrue(bookShopRecomendation(bookBudget) == ???)
-
-    assertTrue(true)
+    // Fill the exercises:
+    assertTrue(mexicanStore(BritishPounds(???)) == "You have spent 56 pesos, amigo.")
+    assertTrue(mexicanStore(MexicanPesos(???)) == "You have spent 256 pesos, amigo.")
   }
 
-  // An implicit class can be used in cases where we want to add methods to a class that has already been defined.
+  // An implicit class can be used in cases where we want to add methods to a class that has already
+  // been defined.
   // This could be useful in the following scenarios:
-  // 1) You are using a using a library that is not yours and you want to add a method for a class in this library.
+  // 1) You are using a using a library that is not yours and you want to add a method for a class
+  // in this library.
   // 2) The method you want to implement does not make sense "globally".
 
   Exercise("Implicit classes") {
-    // implement Example and Exercise and Topic
-    // Topic { Example { } Exercise { } }
-    // TODO Change this exercise
     implicit class ListStat(values: List[Int]) {
-      def mean: Double = values.sum / values.size
+      // A function that gets a random value from a list
+      def rand: Int = values(Random.between(0, values.length))
     }
 
-    // When an implicit class is in our scope we can call the methods defined inside this class even this methods are not defined in the type that this class wraps.
-    val numbers = List(10, 20)
-    assertTrue(numbers.mean == 15)
+    // When an implicit class is in our scope we can call the methods defined inside this class even 
+    // this methods are not defined in the type that this class wraps.
+    val numbers = List(10, 20, 30)
+
+    val result = numbers.rand // We don't know what we will get!
+
+    assertTrue(List(42).rand == Int.???) // But this case is 'deterministic'.
   }
 
   Exercise("implicit classes 2") {
-    // Implicit classes only take one explicit parameter(the value on which you are adding the extension methods) but can take additional implicit parameters.
+    // Implicit classes only take one explicit parameter (the value on which you are adding the
+    // extension methods) but can take additional implicit parameters.
 
     implicit class NumericListOps[A: Numeric](values: List[A]) {
       val numeric: Numeric[A] = implicitly[Numeric[A]]
       def mean: Double = numeric.toDouble(values.sum) / values.length
     }
 
-    val favoriteNumbers = List(10.0, 30.0)
+    val favoriteNumbers: List[Double] = List(10.0, 30.0)
     assertTrue(favoriteNumbers.mean == 20.0)
 
     // NOTE: Another way of declaring Numeric restriction
-//    implicit class NumericListOpsTwo[A](values: List[A])(implicit numeric: Numeric[A]) {
-//      def mean: Double = numeric.toDouble(values.sum) / values.length
-//    }
-//
+    implicit class NumericListOpsTwo[A](values: List[A])(implicit numeric: Numeric[A]) {
+      def mean2: Double = numeric.toDouble(values.sum) / values.length
+    }
+
+    val favoriteNumbers2: List[Double] = List(10.0, 20.0, 30.0)
+    assertTrue(favoriteNumbers2.mean2 == 0.0) // Excercise: Fix me!
   }
 }
