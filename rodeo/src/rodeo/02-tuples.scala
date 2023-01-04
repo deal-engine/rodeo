@@ -32,10 +32,13 @@ object Tuples extends Chapter {
   // Accessing tuple contained elements.
   //
   // Once you have a tuple, you can access it's internal elements by
-  // using the _<position> method.
+  // using the _<position> method provided by Scala 2.
   //
   // eg. tuple._1 should give you access to the first value
   // and tuple._2 to the second one, and so on.
+  //
+  // In Scala 3 this is different and they are accessed with normal
+  // indexing: i.e. tuple(0) for the first value
 
   Exercise("Access the second element of a tuple") {
     val friends: (String, String) = ("davo", "fabian")
@@ -46,23 +49,8 @@ object Tuples extends Chapter {
     assertTrue(secondFriend == "fabian")
   }
 
-  Exercise("Access elements of a tuple via pattern matching") {
-    val (davo, fabian): (String, String) = ???
-
-    assertTrue(davo == "davo")
-    assertTrue(fabian == "fabian")
-  }
-
   Exercise("Use arrow `->` as syntactic sugar to create tuples") {
     val friends: (String, String) = "TODO" -> "TODO"
     assertTrue(friends == ("davo", "fabian"))
   }
-
-  Exercise("Destructure tuples in a function") {
-    val seq: Seq[Int] = Seq((1, 2), (3, 4)).map { case (a, b) =>
-      ???
-    }
-    assertTrue(seq == Seq(3, 7))
-  }
-
 }
