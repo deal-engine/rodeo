@@ -2,8 +2,6 @@ package rodeo
 
 import zio.test._
 
-import scala.util.{Failure, Success, Try}
-
 object FunctionsAndMethods extends Chapter {
   // Functions describe transformation of data and are the basic building block of
   // functional programming.
@@ -328,8 +326,84 @@ object FunctionsAndMethods extends Chapter {
   }
 
   Exercise("Pattern Matching") {
-  
-    assertTrue(true)
+    // Pattern matching is a way to match the structure of a value, it can be used to
+    // provide a «switch» or «case» like behavior, however it's more powerful.
+    //
+    // You can match against all kinds of values, such as:
+    // - Simple values like: `true`, `false`, `null`, or strings
+    // - Compound values like: Tuples, case classes, collections, and more
+    //
+    // It's also possible to match against more complex values like:
+    // - Regular expressions
+    // - Type patterns
+    // - Guards (matching with conditions)
+
+    // Simple values
+    val result = "Hello" match {
+      case "Hello" => "World"
+      case _ => "Nothing"
+    }
+    assertTrue(result == "World")
+
+    // Compound values
+    val result2 = (1, 2, 3, 4) match {
+      case (_, 2, _, 4) => "Matched!"
+      case _ => "Not matched"
+    }
+    assertTrue(result2 == "Matched!")
+
+    // Regular expressions
+    val result3 = "Hello World" match {
+      case s"Hello $name" => s"Hi, $name"
+      case _ => "Not matched"
+    }
+    assertTrue(result3 == "Hi, World")
+
+    // Type patterns
+    val result4 = List(1, 2, 3, 4) match {
+      case list: List[Int] => "List of ints!"
+      case _ => "Not matched"
+    }
+    assertTrue(result4 == "List of ints!")
+
+    // Guards
+    val result5 = "Hello World" match {
+      case str if str.length > 10 => "Long String"
+      case _ => "Not matched"
+    }
+    assertTrue(result5 == "Long String")
+
+    // Exercise: Define a pattern matching that checks if a value is an Int and if it's
+    // greater than 10, it should return it's square.
+    val result6 = 10 match {
+      case i: Int if i > 10 => ???
+      case _ => "Not matched"
+    }
+
+    assertTrue(
+      result6 == "It's a square",
+      (10 match {
+        case i: Int if i > 10 => "Not matched"
+        case _ => "Not matched"
+      }) == "Not matched"
+    )
+
+    // We can also pattern match in asignations. With tuples, we can
+    // assign multiple values to multiple variables simultaneously.
+    val (name, age, sex) = ("John", 30, "Male")
+    assertTrue(
+      name == "John",
+      age == 30,
+      sex == "Male"
+    )
+
+    // Exercise: Define three variables that assign the values of a Tuple3.
+    val (a, b, c) = (Int.???, Int.???, Int.???)
+    assertTrue(
+      a == 10,
+      b == 20,
+      c == 30
+    )
   }
 
   Exercise("Recursive functions") {
