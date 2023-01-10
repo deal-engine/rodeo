@@ -1,11 +1,11 @@
 package rodeo
 
-import rodeo.Functions.Exercise
+import rodeo.FunctionsAndMethods.Exercise
 import zio.test.assertTrue
 
 import scala.collection.immutable.List
 
-object CaseClasses {
+object CaseClasses extends Chapter {
   /*
     Scala Case Classes are good for modeling immutable data. To define a Case Class we need to specify a constructor
     parameter list. These parameters are meant to define the most significant properties we want the objects of our

@@ -11,11 +11,14 @@ object RodeoSpec extends ZIOSpecDefault {
       suite("Scala Basics")(
         suite("Variables")(Variables.exercises),
         suite("Tuples")(Tuples.exercises),
+        suite("Functions And Methods")(FunctionsAndMethods.exercises),
+        suite("Polymorphic Functions")(PolymorphicFunctions.exercises),
         suite("Options")(Options.exercises),
         suite("Sequences")(Sequences.exercises),
-        suite("Function")(Functions.exercises),
+        suite("Either & Try")(EitherAndTry.exercises),
+        suite("Functions Leftovers")(FunctionsLeftovers.exercises),
+        suite("Case Classes")(CaseClasses.exercises),
         suite("Implicits")(Implicits.exercises),
-        suite("Either & Try")(EitherAndTry.exercises)
       ) @@ sequential @@ failFast
     ).provideLayerShared(Latch.live)
 
