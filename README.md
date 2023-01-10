@@ -13,55 +13,122 @@ Quickstart
 ----------
 
 - Install Nix
-- Enable Flakes support
+- (Optional) Enable Flakes support
 - (Optional) Install direnv
+- Clone this repository
 
-If using direnv: Allow this repository. Else: Enter the Nix Shell using `nix develop`.
+If using direnv: Allow this repository. Else: Enter the Nix Shell using `nix develop`, unless you are not using flakes, then
+`nix-shell shell.nix`
 
-You will see a menu with options available for Rodeo.
+Detailed instructions
+----------------------
+The first thing to do is to install Nix. This is a package manager. It will allow you to download
+dependencies in an isolated way.
 
-Installation
-------------
+To install Nix in Linux run:
+
+    sh <(curl -L https://nixos.org/nix/install) --daemon
+
+In macOS (Darwin) don't use `--daemon`:
+
+    sh <(curl -L https://nixos.org/nix/install)
+
+For more information about Nix installation you can check their [documentation](https://nixos.org/manual/nix/stable/installation/installation.html).
+
+If you are using NixOS, you already have Nix installed.
+
+### Flakes support
+
+Flakes is a feature in the Nix package manager. It allows us to create
+isolated environments.
+
+To enable Flakes:
+
+- In Linux/macOS: `~/.config/nix/ && echo "experimental-features = nix-command flakes" >> ~/.config/nix/`
+
+### Installing direnv
+
+We recommend using direnv to enter the environment in an easier way.
+
+You can install it using flakes:
+
+    nix profile install nixpkgs#direnv
+
+Now add the hook to your `~/.zshrc` if using ZSH:
+
+    eval "$(direnv hook zsh)"
+
+For bash is similar:
+
+    eval "$(direnv hook bash)"
+
+### Clone this repository
+
+Clone this repository to begin the Scala Rodeo.
 
     git clone https://github.com/deal-engine/rodeo.git
-    cd rodeo
+
+### Entering the environment
+
+If you are using direnv you can just enter the repository and it will
+enter the nix shell unless it's your first time. For security reasons
+direnv will ask you to allow the environment. If it doesn't you can
+allow it with `direnv allow`.
+
+Otherwise you can enter the environment using the command:
+
     nix develop
 
-Instructions
-------------
+Unless you are not using flakes, then you need to use `nix-shell shell.nix`.
 
-Make sure you are in a nix shell by running `nix develop` at least once,
-and then run this in your terminal to see your progress.
+### Exiting
 
-    mill -w rodeo.test
+To exit the environment either exit the shell or exit the directory if you are
+using direnv.
 
-Rodeos
+### Devshell
+
+You will be presented with something like this:
+
+    ### ️🔨 Welcome to the Nix devshell ###
+
+    Available commands:
+
+    ## Commands
+
+      , editor        : Run a preconfigured VSCode.
+      , editor-setup  : Setup the editor.
+      , readme        : Read the readme.
+      , tests         : Run the Rodeo tests.
+
+    (Run ',' to display this menu again)
+
+IntelliJ it's recommended. but we have included a functional VS Code editor with support
+for scala.
+
+You can open it with `, editor` command. Unless it's your first time,
+you will need to setup the environment first. You can do it with the
+`, editor-setup` command.
+
+Once you have opened the editor you can open the `src` folder. You will
+find the source code of the Rodeo.
+
+You can read the README with `, readme` command.
+
+Once you are finished you can exit the environment with `exit`.
+
+You can run the tests with the `, tests` command.
+
+Tests
 -----
 
-- [ ] `Seq`
-- [ ] pattern matching `match`, anonymous functions, `for`
-- [ ] objects / trait / case class
-- [ ] `Future`
-- [ ] OOO Programming → Functional Programming
-- [ ] `for` vs `map`
-- [ ] `while` vs `foreach`
-- [ ] mutability vs immutability
-- [ ] Data transformations
-    - [ ] Map → Seq()
-    - [ ] LocalDateTime → LocalDate
-- [ ] `map`/`flatMap` - differences between `Option`/`Seq`/`Try`
-- [ ] Best practices (wart remover)
-    - [ ] `.get`
-    - [ ] `unsafeRun`
-    - [ ] `Await.result`
-- [ ] implicits
-- [ ] Dependency Injections
-- [ ] ZIO
-- [ ] abstract class / sealed trait / class / final case class
-- [ ] GADTs / sealed traits / Data Modeling
-- [ ] Parsers
-- [ ] Architecture
+Tests are here to check your exercises.
 
+You can run the tests with `, tests` command.
 
-- Rope colors (difficulty)
+This is syntactic sugar for `mill -w rodeo.test`
 
+That's all for now!
+-----------------
+
+Happy rodeeeoooooo! 🤠🏇🏻
