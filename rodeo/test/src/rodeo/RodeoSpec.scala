@@ -3,16 +3,7 @@ package rodeo
 import zio.test.TestAspect._
 import zio.test._
 import zio._
-import scala.util.Try
-import scala.util.Success
-import scala.util.Failure
-import zio.Cause.Stackless
-import zio.Cause.Interrupt
-import zio.Cause.Then
 import zio.Cause.Die
-import zio.Cause.Fail
-import zio.Cause.Both
-import zio.Cause.Empty
 
 object RodeoSpec extends ZIOSpecDefault {
 
