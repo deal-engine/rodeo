@@ -3,6 +3,16 @@ package rodeo
 import zio.test.TestAspect._
 import zio.test._
 import zio._
+import scala.util.Try
+import scala.util.Success
+import scala.util.Failure
+import zio.Cause.Stackless
+import zio.Cause.Interrupt
+import zio.Cause.Then
+import zio.Cause.Die
+import zio.Cause.Fail
+import zio.Cause.Both
+import zio.Cause.Empty
 
 object RodeoSpec extends ZIOSpecDefault {
 
@@ -19,7 +29,7 @@ object RodeoSpec extends ZIOSpecDefault {
         suite("Functions Leftovers")(FunctionsLeftovers.exercises),
         suite("Case Classes")(CaseClasses.exercises),
         suite("Implicits")(Implicits.exercises),
-      ) @@ sequential @@ failFast
+      ) @@ sequential @@ handleNothing @@ failFast
     ).provideLayerShared(Latch.live)
 
   type Latch = Ref[Option[Unit]]
@@ -30,6 +40,22 @@ object RodeoSpec extends ZIOSpecDefault {
       )
     }
   }
+
+  def handleNothing =
+    new TestAspect.PerTest {
+      def perTest[R, E](test: ZIO[R,TestFailure[E],TestSuccess])(implicit trace: Trace): ZIO[R,TestFailure[E],TestSuccess] = {
+        test.mapError {
+          case err@TestFailure.Runtime(cause: Cause[Nothing], _) => cause match {
+            case Die(value, trace) => {
+              println(trace)
+              TestFailure.Runtime(Cause.die(value))
+            }
+            case otherwise => err
+          }
+          case otherwise => otherwise
+        }
+      }
+    }
 
   def failFast =
     new TestAspect.PerTest.AtLeastR[Latch] {

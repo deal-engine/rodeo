@@ -18,6 +18,11 @@ import scala.collection.mutable.{ArrayBuffer => MutableSeq}
   */
 package object rodeo {
   type SpecType = Spec[Any, Any]
+  
+  class PendingExercise(err: String) extends Exception(err)
+
+  @inline
+  def ??? (implicit line: sourcecode.Line, file: sourcecode.File): Nothing = throw new PendingExercise(s"The excercise in file ${file.value} and line ${line.value} is incomplete.")
 
   trait Chapter {
     private val mutableSpecs: MutableSeq[SpecType] = MutableSeq.empty
@@ -83,7 +88,8 @@ package object rodeo {
   }
 
   object Int {
-    def ??? : Int = Predef.???
+    @inline
+    def ??? (implicit line: sourcecode.Line, file: sourcecode.File): Int = rodeo.???(line, file)
   }
   object types {
     type ??? = Nothing
