@@ -4,72 +4,64 @@ import zio.test._
 // We could also say that a class is an implementation of an interface.
 // The ability to implement the same interface in two different ways and achieve the same functionality is called data abstraction.
 // Data abstraction is of fundamental importance in software engineering.
-// TODO everything.
+// It enables code reuse, modularization and extensibility.
 
 object Class extends Chapter {
 
   Exercise("Instantianting a class") {
 
     // To define a class we nee to specify a constructor parameter list.
-
     class Person(name: String, age: Int)
 
     // To instantiate a class we need to use the `new` constructor.
+    // Exercise: Write the correct name.
+    val ana = new Person(???, 32)
 
-    val Ana = new Person(???, 32)
-
+    assertTrue(true)
   }
 
   Exercise("Data abstraction") {
+    // In the following exercise we give two different implementations for the animal and color interface.
+    // Both of this implementations allow us to match animals with their corresponding colors.
 
-    // In the following excercise we give two different implementations for the complex numbers with multiplication interface.
-    // Both of this implementations allow us to multiply complex numbers.
+    class Animal(name: String, color: String) {
+      def getName = name
 
-    class ComplexNumber(x: Double, y: Double) {
-      def real = x
-
-      def imaginary = y
-
-      def multiply(z: ComplexNumber) = new ComplexNumber(
-        real * z.real - imaginary * z.imaginary,
-        real * z.imaginary + imaginary * z.real
-      )
+      def getColor = color
     }
 
-    class ComplexNumberPolar(x: Double, y: Double) {
-      def radius = x
+    class AnimalColor(name: String, color: String) {
+      def getName = name
 
-      def angle = y
+      def getColor = color
 
-      def multiply(z: ComplexNumberPolar) =
-        new ComplexNumberPolar(radius * z.radius, angle + z.angle)
+      def matchColors(z: AnimalColor): Boolean =
+        getColor == z.getColor
     }
 
-    val complexNumber = new ComplexNumber(1, 2)
-    val complexNumberPolar = new ComplexNumberPolar(1, 45)
+    val animal = new Animal("Dog", "Brown")
+    val animalColor = new AnimalColor("Cat", "Orange")
 
-    assertTrue(complexNumber.real == ???)
-    assertTrue(complexNumberPolar.angle == ???)
-
+    assertTrue(animal.getName == ???)
+    assertTrue(animalColor.getColor == ???)
   }
-
-  // To define the ComplexNumber class we had to implement the real and imaginary methods inside of this class.
-  // We could achieve the same functionality by defining the constructor parameters with vals.
-  // Doing this endowes classes with accesor methods that allows to recover the parameters that were used to instantiate a class.
 
   Exercise("Accesor methods") {
 
-    class ComplexNumberWithGetters(val real: Double, val imaginary: Double) {
-      def multiply(z: ComplexNumberWithGetters) = new ComplexNumberWithGetters(
-        real * z.real - imaginary * z.imaginary,
-        real * z.imaginary + imaginary * z.real
+    // To define the Animal class we had to implement the getName and getColor methods inside of this class.
+    // We could achieve the same functionality by defining the constructor parameters with vals.
+    // Doing this endows classes with accessor methods that allow us to recover the parameters that were used to instantiate a class.
+
+    class AnimalWithGetters(val name: String, val furColor: String) {
+      def matchAnimals(z: AnimalWithGetters) = new AnimalWithGetters(
+        name + " and " + z.name,
+        furColor + " and " + z.furColor
       )
     }
-    val z = new ComplexNumberWithGetters(1, 0)
-    val w = new ComplexNumberWithGetters(0, 1)
+    val dog = new AnimalWithGetters("dog", "brown")
+    val cat = new AnimalWithGetters("cat", "orange")
 
-    assertTrue((z.multiply(w)).real == ???)
-
+    assertTrue((dog.matchAnimals(cat)).name == ???)
   }
 
   // A Class B can inherit from a Class A. This means that the methods that were defined in A are also abaivable in B.
@@ -77,80 +69,69 @@ object Class extends Chapter {
   // Classes that inherit from a given class can implement methods that were not defined in the original class.
 
   Exercise("Inheritance") {
-    // We don't have a succesor method defined within the complex numbers.
-    // In the real and imaginary numbers we can define a succesor method in a natural way.
+    // In object-oriented programming, inheritance allows us to define a new class that inherits properties and methods from an existing class.
+    // This is useful for creating classes that are closely related to existing classes, while still maintaining code reuse and modularization.
 
-    class ComplexNumber(val real: Double, val imaginary: Double) {
-      def multiply(z: ComplexNumber) = new ComplexNumber(
-        real * z.real - imaginary * z.imaginary,
-        real * z.imaginary + imaginary * z.real
-      )
-
-      def sum(z: ComplexNumber) =
-        new ComplexNumber(real + z.real, imaginary + z.imaginary)
+    // Let's say we have a base class Animal
+    class Animal(val name: String, val numberOfLegs: Int) {
+      def makeNoise(): String = "some noise"
     }
 
-    class RealNumbers(override val real: Double, override val imaginary: Double)
-        extends ComplexNumber(real, imaginary) {
-      val realUnit = new RealNumbers(0, 1)
-
-      def successor(x: ComplexNumber): ComplexNumber = x.sum(realUnit)
+    // Now we want to create classes for specific animals that inherit from Animal
+    class Dog(name: String) extends Animal(name, 4) {
+      override def makeNoise(): String = "woof"
     }
 
-    class ImaginaryNumbers(
-        override val real: Double,
-        override val imaginary: Double
-    ) extends ComplexNumber(real, imaginary) {
-      val imaginaryUnit = new ImaginaryNumbers(0, ???)
-
-      def successor(x: ComplexNumber): ComplexNumber = x.sum(???)
+    class Cat(name: String) extends Animal(name, 4) {
+      override def makeNoise(): String = "meow"
     }
 
-  }
-
-  Exercise("PositiveRealNumbers") {
-    class ComplexNumber(val real: Double, val imaginary: Double) {
-      def multiply(z: ComplexNumber) = new ComplexNumber(
-        real * z.real - imaginary * z.imaginary,
-        real * z.imaginary + imaginary * z.real
-      )
-
-      def sum(z: ComplexNumber) =
-        new ComplexNumber(real + z.real, imaginary + z.imaginary)
+    class Duck(name: String) extends Animal(name, 2) {
+      override def makeNoise(): String = "quack"
     }
-    // If we want to impose a certain conditions on the instances of a certain class, we can do this by using the requiere function.
 
-    class PositiveRealNumbers(override val real: Double)
-        extends ComplexNumber(real, 0) {
-      require(real > ???, "real should be a positive number")
-    }
+    val dog = new Dog("Fido")
+    val cat = new Cat("Whiskers")
+    val duck = new Duck("Donald")
+
+    // Check that the inherited properties and methods are correct
+    assertTrue(dog.name == ???)
+    assertTrue(dog.numberOfLegs == 0)
+    assertTrue(dog.makeNoise() == ???)
+
+    assertTrue(cat.name == ???)
+    assertTrue(cat.numberOfLegs == 0)
+    assertTrue(cat.makeNoise() == ???)
+
+    assertTrue(duck.name == ???)
+    assertTrue(duck.numberOfLegs == 0)
+    assertTrue(duck.makeNoise() == ???)
   }
 
   // An abstract class is similar to an interface but it might specify constructor parameter arguments.
   // Another important difference is that a class can only inherit from a single abstract class but could inherit from
-  // multiple "interfaces"(traits). We will return to this point later.
+  // multiple "interfaces" (traits). We will return to this point later in Rodeo.
 
   Exercise("Abstract classes") {
 
-    abstract class MathematicalObject(isBeautiful: Boolean = true) {
-      def howBeautiful: String
+    abstract class Food(isDelicious: Boolean = true) {
+      def howDelicious: String
     }
 
-    class GeometricalObject(dimension: Int) extends MathematicalObject {
-      override def howBeautiful: String = {
-        if (dimension < 3) "Boring, a complete classification already exists"
-        else if (dimension == 3) "Extremely beautiful"
-        else "Beautiful"
+    class Fruit(color: String) extends Food {
+      override def howDelicious: String = {
+        if (color == "green") "Not sweet"
+        else if (color == "yellow" || color == "orange") "Sweet"
+        else "Extremely sweet"
       }
     }
 
-    class TuringMachine(halts: Boolean) extends MathematicalObject {
-      override def howBeautiful: String =
-        if (halts) "Very beautiful, we have al algorithm that terminates!"
-        else "It depends what you like, we are in an infinit loop my friend"
+    class Vegetable(typeOf: String) extends Food {
+      override def howDelicious: String =
+        if (typeOf == "leafy") "Delicious, healthy greens"
+        else "It depends on your preference, it may be bitter"
     }
 
-    assertTrue(??? == "Beautiful")
-
+    assertTrue("Extremely sweet" == ???)
   }
 }
