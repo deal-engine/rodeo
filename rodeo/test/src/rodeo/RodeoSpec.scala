@@ -18,6 +18,7 @@ object RodeoSpec extends ZIOSpecDefault {
         suite("Sequences")(Sequences.exercises),
         suite("Either & Try")(EitherAndTry.exercises),
         suite("Functions Leftovers")(FunctionsLeftovers.exercises),
+        suite("Classes")(Classes.exercises),
         suite("Case Classes")(CaseClasses.exercises),
         suite("Implicits")(Implicits.exercises),
       ) @@ sequential @@ handleNothing @@ failFast

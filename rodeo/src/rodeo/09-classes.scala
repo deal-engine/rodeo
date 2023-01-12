@@ -6,7 +6,7 @@ import zio.test._
 // Data abstraction is of fundamental importance in software engineering.
 // It enables code reuse, modularization and extensibility.
 
-object Class extends Chapter {
+object Classes extends Chapter {
 
   Exercise("Instantianting a class") {
 
