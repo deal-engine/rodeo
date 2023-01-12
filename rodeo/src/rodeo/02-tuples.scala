@@ -10,19 +10,15 @@ object Tuples extends Chapter {
   // Each element of a tuple can be of different type, for example, the
   // tuple containing an String and an Int is of type: Tuple2[String, Int]
   //
-  // In Scala2, tuples can hold from one to 22 different values,
-  // and their types are:  Tuple1[A], Tuple2[A, B], Tuple3[A, B, C], ...
+  // In Scala2, tuples can hold from one to 22 different values.
   //
   // In Scala2, there is syntactic sugar to shorten those types:
-  //   - Tuple1[A] = (A)
-  //   - Tuple2[A, B] = (A, B)
-  //   - Tuple3[A, B, C] = (A, B, C)
+  //   - Tuple1[Int] = (Int)
+  //   - Tuple2[Int, Boolean] = (Int, Boolean)
+  //   - Tuple3[Int, Boolean, Double] = (Int, Boolean, Double)
   //   - ...
   //
   // In Scala3 tuples are not restricted to 22 fields.
-  //
-  // In literature tuples are known as "products" `A x B` because they
-  // can hold for every possible value of A, every possible value of B.
 
   Exercise("Create a tuple containing your name and age") {
     val nameAndAge: (String, Int) = (???, ???)
@@ -32,10 +28,13 @@ object Tuples extends Chapter {
   // Accessing tuple contained elements.
   //
   // Once you have a tuple, you can access it's internal elements by
-  // using the _<position> method.
+  // using the _<position> method provided by Scala 2.
   //
   // eg. tuple._1 should give you access to the first value
   // and tuple._2 to the second one, and so on.
+  //
+  // In Scala 3 this is different and they are accessed with normal
+  // indexing: i.e. tuple(0) for the first value
 
   Exercise("Access the second element of a tuple") {
     val friends: (String, String) = ("davo", "fabian")
@@ -46,23 +45,8 @@ object Tuples extends Chapter {
     assertTrue(secondFriend == "fabian")
   }
 
-  Exercise("Access elements of a tuple via pattern matching") {
-    val (davo, fabian): (String, String) = ???
-
-    assertTrue(davo == "davo")
-    assertTrue(fabian == "fabian")
-  }
-
   Exercise("Use arrow `->` as syntactic sugar to create tuples") {
     val friends: (String, String) = "TODO" -> "TODO"
     assertTrue(friends == ("davo", "fabian"))
   }
-
-  Exercise("Destructure tuples in a function") {
-    val seq: Seq[Int] = Seq((1, 2), (3, 4)).map { case (a, b) =>
-      ???
-    }
-    assertTrue(seq == Seq(3, 7))
-  }
-
 }
