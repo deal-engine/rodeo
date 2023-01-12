@@ -134,4 +134,49 @@ object Classes extends Chapter {
 
     assertTrue("Extremely sweet" == ???)
   }
+
+  Exercise("Misc") {
+    // With all that we learned in this chapter, we can now understand a few concepts that are fundamental to software engineering:
+    // classes, data abstraction, inheritance and abstract classes.
+    // Using the followings definitions:
+    class Animal(name: String, color: String) {
+      def getName = name
+
+      def getColor = color
+    }
+    class Person(name: String, age: Int, pet: Option[Animal] = None) {
+      def hasPet: Boolean = pet.isDefined
+    }
+    class AnimalColor(name: String, color: String) {
+      def getName = name
+
+      def getColor = color
+
+      def matchColors(z: AnimalColor): Boolean =
+        getColor == z.getColor
+    }
+    class AnimalWithGetters(val name: String, val furColor: String) {
+      def matchAnimals(z: AnimalWithGetters): Map[String, Boolean] = Map(
+        "name" -> (name == z.name),
+        "furColor" -> (furColor == z.furColor)
+      )
+    }
+    abstract class Food(isDelicious: Boolean = true) {
+      def howDelicious: String
+    }
+
+    // Write the correct answers for the assertions below
+    val ana = new Person("Ana", 32)
+    val animal = new Animal("Doggo", "Brown")
+    val animalColor = new AnimalColor("Cat", "Orange")
+    val dog = new AnimalWithGetters("Puck", "brown")
+    val cat = new AnimalWithGetters("Puck", "orange")
+    val albert = new Person("Albert", 23, Some(new Animal("Puppy", "White")))
+
+    assertTrue(ana.hasPet == ???)
+    assertTrue(animal.getName == ???)
+    assertTrue(animalColor.getColor == ???)
+    assertTrue((dog.matchAnimals(cat))("name") == ???)
+    assertTrue(albert.hasPet == ???)
+  }
 }
