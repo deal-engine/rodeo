@@ -128,6 +128,12 @@ You can run the tests with `, tests` command.
 
 This is syntactic sugar for `mill -w rodeo.test`
 
+### Running specific tests
+
+You can run a specific test by running `mill -w rodeo.test -t "something"` where `something` is a tag that matches over all the tests.
+
+For example, you can run all the tests related to the `Option` exercises with `mill -w rodeo.test -t "Option"`.
+
 That's all for now!
 -----------------
 
