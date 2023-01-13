@@ -8,6 +8,13 @@
 ; [please]
 ; version = 16.26.1
 
+;; https://please.build/config.html
+[Build]
+path=/empty
+
+[BuildConfig]
+nix-tool=/nix/var/nix/profiles/default/bin/nix
+
 [Cache]
 RetrieveCommand="./bin/gcp-cache $CACHE_KEY retrieve"
 StoreCommand="./bin/gcp-cache $CACHE_KEY store"
