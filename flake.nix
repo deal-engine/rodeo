@@ -4,6 +4,9 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-root.url = "github:srid/flake-root";
     mission-control.url = "github:Platonic-Systems/mission-control";
+
+    please-aarch64-darwin.url = "https://github.com/thought-machine/please/releases/download/v16.26.1/please_16.26.1_darwin_arm64.tar.gz";
+    please-aarch64-darwin.flake = false;
   };
 
   outputs = inputs@{ self, nixpkgs, flake-parts, ... }:
@@ -12,8 +15,22 @@
       imports = [
         inputs.flake-root.flakeModule
         inputs.mission-control.flakeModule
+        inputs.flake-parts.flakeModules.easyOverlay
       ];
       perSystem = { pkgs, lib, config, system, ... }: {
+        overlayAttrs = {
+          inherit (config.packages) please;
+        };
+        packages.please = with pkgs; stdenvNoCC.mkDerivation {
+          name = "please";
+          src = inputs."please-${system}";
+          phases = ["install"];
+          install = ''
+          mkdir -p $out/bin
+          cp $src/* $out/bin
+          (cd $out/bin; ln -s please plz)
+          '';
+        };
         mission-control.scripts = {
           readme = {
             description = "Read the readme.";
@@ -55,8 +72,9 @@
             ];
           };
           shell = pkgs.mkShell {
-            buildInputs = [ 
-              pkgs.mill
+            buildInputs = with pkgs; [
+              mill
+              config.packages.please
               vscode
             ];
           };
