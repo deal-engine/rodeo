@@ -72,9 +72,9 @@
             ];
           };
           shell = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              mill
+            buildInputs = [
               config.packages.please
+              pkgs.mill
               vscode
             ];
           };
