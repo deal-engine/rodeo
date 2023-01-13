@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Cache implementation for please build backed by google buckets.
+# https://please.build/cache.html
+set -Eeuo pipefail
+
+NIX="/nix/var/nix/profiles/default/bin/nix"
+OBJ=gs://deal-engine-new-gitlab-cache/please/"$1"
+GSU_PATH=$($NIX shell nixpkgs#google-cloud-sdk nixpkgs#coreutils nixpkgs#bash -c bash -c 'echo $PATH')
+GSU="env PATH='$GSU_PATH' gsutil"
+
+if [ "$2" == "retrieve" ]; then
+  $GSU cp "$OBJ"  -
+  exit 0
+fi
+
+if [ "$2" == "store" ]; then
+  $GSU cp - "$OBJ"
+  exit 0
+fi
+
+
+cat <<-EOF >&2
+Usage: gcp-cache KEY [retrieve/store]
+EOF
+exit 1

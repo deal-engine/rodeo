@@ -7,3 +7,7 @@
 ; when you change it all users will automatically get updated.
 ; [please]
 ; version = 16.26.1
+
+[Cache]
+RetrieveCommand="./bin/gcp-cache $CACHE_KEY retrieve"
+StoreCommand="./bin/gcp-cache $CACHE_KEY store"

@@ -1,13 +1,5 @@
 CONFIG.setdefault('NIX_TOOL', '/nix/var/nix/profiles/default/bin/nix')
 
-genrule(
-  name = "hello",
-  srcs = [],
-  outs = ["hello.out"],
-  cmd = "echo hello > $OUT",
-)
-
-
 def nix_tool(name, nix_attr, tool):
   genrule(
     name = name,
@@ -15,13 +7,13 @@ def nix_tool(name, nix_attr, tool):
     tools = [ CONFIG.NIX_TOOL ],
     outs = [ tool ],
     cmd = f"""
-    CS_TOOL=$($TOOL shell {nix_attr} -c command -- which {tool})
+    CS_TOOL=$($TOOL shell nixpkgs#{nix_attr} nixpkgs#which -c which {tool})
     ln -s $CS_TOOL $OUT
     """
   )
 
-nix_tool("coursier", "nixpkgs#coursier", "cs")
-nix_tool("scalacli", "nixpkgs#scala-cli", "scala-cli")
+nix_tool("coursier", "coursier", "cs")
+nix_tool("scalacli", "scala-cli", "scala-cli")
 
 genrule(
   name = "deps",
