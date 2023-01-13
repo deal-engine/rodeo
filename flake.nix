@@ -57,6 +57,10 @@
               echo "Have fun! 🐴"
             '';
           };
+          build = {
+            description = "Please build.";
+            exec = "please build";
+          };
         };
         devShells.default =
           let unfreepkgs = import nixpkgs { 
