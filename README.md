@@ -44,7 +44,7 @@ isolated environments.
 
 To enable Flakes:
 
-- In Linux/macOS: `mkdir -p ~/.config/nix/ && echo "experimental-features = nix-command flakes" >> ~/.config/nix/`
+- In Linux/macOS: `mkdir -p ~/.config/nix/ && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 
 ### Installing direnv
 
