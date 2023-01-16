@@ -44,7 +44,7 @@ isolated environments.
 
 To enable Flakes:
 
-- In Linux/macOS: `mkdir -p ~/.config/nix/ && echo "experimental-features = nix-command flakes" >> ~/.config/nix/`
+- In Linux/macOS: `mkdir -p ~/.config/nix/ && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 
 ### Installing direnv
 
@@ -127,6 +127,12 @@ Tests are here to check your exercises.
 You can run the tests with `, tests` command.
 
 This is syntactic sugar for `mill -w rodeo.test`
+
+### Running specific tests
+
+You can run a specific test by running `mill -w rodeo.test -t "something"` where `something` is a tag that matches over all the tests.
+
+For example, you can run all the tests related to the `Option` exercises with `mill -w rodeo.test -t "Option"`.
 
 That's all for now!
 -----------------
