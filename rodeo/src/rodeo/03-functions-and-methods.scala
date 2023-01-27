@@ -106,8 +106,8 @@ object FunctionsAndMethods extends Chapter {
 
   Exercise("Default arguments") {
     // Default arguments
-    // In Scala is possible to define default values for certain inputs, in order that
-    // way we dont need to always pass all arguments when calling methods.
+    // In Scala is possible to define default values for certain inputs.
+    // With default arguments we don't need to always pass all arguments when calling methods.
 
     // NOTE: Only `def` functions/methods can have default arguments.
     //       Value `val` functions cannot have default arguments.
@@ -118,7 +118,7 @@ object FunctionsAndMethods extends Chapter {
       greeting("Johnny", "Dear ") == "Dear Johnny"
     )
 
-    // Exercise: Modify the following function that multiples two numbers, such that
+    // Exercise: Modify the following function that multiplies two numbers, such that
     // one of them is set to 2 by default.
     def multiplier(numberA: Int, numberB: Int): Int = {
       numberA * numberB
@@ -128,8 +128,8 @@ object FunctionsAndMethods extends Chapter {
   }
 
   Exercise("Nested functions/methods") {
-    // You can define functions within functions or methos within methods, it can
-    // help with code de-duplication and code organzation.
+    // You can define functions within functions or methods within methods, it can
+    // help with code de-duplication and code organization.
     def calculator(numberA: Double, numberB: Double, operator: String) = {
       def sum(times: Int) =
         (numberA + numberB) * times
@@ -215,7 +215,7 @@ object FunctionsAndMethods extends Chapter {
       duplicator(() => 300) == 600
     )
 
-    // But we can also return functions from other funtions:
+    // But we can also return functions from other functions:
     val funExample = (a: Int) => (b: Int) => a + b 
 
     assertTrue(funExample(3)(4) == 7)
@@ -263,7 +263,7 @@ object FunctionsAndMethods extends Chapter {
     // the pending arguments as the arguments of the function to be returned.
     val warnLogger: String => String = logger(_, "WARN")
 
-    // C.S. Lecture: In reallity, the underscore is an η-redex over lambdas, that is,
+    // C.S. Lecture: In reality, the underscore is an η-redex over lambdas, that is,
     // for a `f(_)` we have an abstraction `x => f(x)`. As you can see, the first one is 
     // easier to work with. Both `f(_)` and `x => f(x)` are semantically equivalent.
 
@@ -388,7 +388,7 @@ object FunctionsAndMethods extends Chapter {
       }) == "Not matched"
     )
 
-    // We can also pattern match in asignations. With tuples, we can
+    // We can also pattern match in assignations. With tuples, we can
     // assign multiple values to multiple variables simultaneously.
     val (name, age, sex) = ("John", 30, "Male")
     assertTrue(

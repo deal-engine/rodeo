@@ -10,7 +10,7 @@ object PolymorphicFunctions extends Chapter {
   // So far we've been using specific types, like Int, String, Double; all of
   // our functions were specific about the types. In Computer Sciences literature
   // we call this level of abstraction the "Simple Typed", in which terms can
-  // only dependend on terms. So we have things like:
+  // only dependent on terms. So we have things like:
   //
   // ```scala
   // val intToInt: Int => Int = (a: Int) => a
@@ -18,7 +18,7 @@ object PolymorphicFunctions extends Chapter {
   // ```
   // 
   // What if we want to have an identity function that returns the same result
-  // as the imput (like `intToInt` but for everything)? In this level we can't
+  // as the input (like `intToInt` but for everything)? In this level we can't
   // do that! But in Scala we can...
   //
   // A quick CS lecture:
@@ -46,16 +46,15 @@ object PolymorphicFunctions extends Chapter {
   // NOTE: This type of polymorphism is also called Parametric Polymorphism
 
   Exercise("Polymorphic functions") {
-    // Let's suppose we want a function that return the same element that it's
-    // given. This is formally called the Indentity Function. In Scala this
-    // can be defined as follows:
-    def indentity[A](a: A): A = a
+    // Let's suppose we want a function that returns the same element that it's given.
+    // This is formally called the Identity Function. In Scala this can be defined as follows:
+    def identity[A](a: A): A = a
     // That's quite a lot of "A"s.
 
     assertTrue(
-      indentity(4) == 4,
-      indentity("hi") == ("hi"),
-      indentity(true) == true
+      identity(4) == 4,
+      identity("hi") == ("hi"),
+      identity(true) == true
     )
 
     // Now that's really interesting. But we have a big problem without
@@ -88,7 +87,7 @@ object PolymorphicFunctions extends Chapter {
     )
 
     // Exercise: Build a function that converts a curried function
-    // into a curried one.
+    // into an uncurried one.
     def uncurry[A, B, C](f: A => B => C) = (a: A, b: B) => 0 // Change this
 
     assertTrue(
@@ -97,8 +96,8 @@ object PolymorphicFunctions extends Chapter {
   }
 
   Exercise("Polymorphic types") {
-    // We can also have polymorphic types. A common example is some type
-    // A wrapped in an Option (which is a type constructor):
+    // We can also have polymorphic types. A common example is some type A
+    // wrapped in an Option (which is a type constructor):
     val optInt: Option[Int] = Option(1)
     val optString: Option[String] = Option("hi")
     // Details about what exactly is Option doesn't matter right now, but
@@ -115,7 +114,7 @@ object PolymorphicFunctions extends Chapter {
     // ```java
     //  Integer[] intArray = {1, 2, 3};
     // ```
-    // This is a great example of a polymorhic type. We can have an
+    // This is a great example of a polymorphic type. We can have an
     // array of any type A. The same applies to Lists in Scala:
     val intList: List[Int] = List(1, 2, 3)
     val stringList: List[String] = List("hi", "hello")

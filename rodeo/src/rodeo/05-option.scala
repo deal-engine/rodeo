@@ -24,11 +24,10 @@ object Options extends Chapter {
     assertTrue(theAnwserToTheUniverseAndEverything.contains(42))
   }
 
-  // since optional values could be absent, trying to obtain the contained value
+  // Since optional values could be absent, trying to obtain the contained value
   // is an *unsafe* operation UNLESS you provide a default in case the option is None
-  //
   Exercise("Use getOrElse") {
-    //  Using Option.getOrElse obtain the value contained in `rodeo` or if it is absent "its my first rodeo"
+    // Using Option.getOrElse obtain the value contained in `rodeo` or if it is absent "it's my first rodeo"
     def fury(rodeo: Option[String]): String = ???
 
     assertTrue(fury(None) == "its my first rodeo") &&
@@ -42,7 +41,7 @@ object Options extends Chapter {
   // Pattern matching allows us to "switch" depending on the
   // structure of the value it is passed.
   Exercise("Pattern matching on Option") {
-    // Change this code so that if theAnswer
+    // Change this code so that:
     // if theAnswer holds 42 the value returned is "you know it all".
     // if theAnswer holds 23 the value should be "Air Jordan"
     // otherwise the value returned should be "Something"
@@ -69,7 +68,7 @@ object Options extends Chapter {
     // The Option constructor will create Some if the argument is not null
     val myOption = Option(2)
     // .exists returns true if the option is Some(x) and if the inner value fulfills the
-    // defined bollean expression
+    // defined boolean expression
     // Place any predicate that the previous option could fulfill:
     assertTrue(myOption.exists(???))
     // .contains allow us to extract the inner value within Some and perform a direct equivalence
