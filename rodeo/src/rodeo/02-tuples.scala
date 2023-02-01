@@ -27,7 +27,7 @@ object Tuples extends Chapter {
 
   // Accessing tuple contained elements.
   //
-  // Once you have a tuple, you can access it's internal elements by
+  // Once you have a tuple, you can access its internal elements by
   // using the _<position> method provided by Scala 2.
   //
   // eg. tuple._1 should give you access to the first value

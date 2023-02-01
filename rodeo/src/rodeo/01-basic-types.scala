@@ -12,7 +12,7 @@ object BasicTypes {
   // For example, we have `Unit`, which is a type with only one value, written as `()`. This is useful
   // for functions that don't return meaningful information, most frequently used for functions
   // performing side-effects but we will se that later.
-  // NOTE: In the Computer Sciences lingo, we often refer to those funtions that return Unit and
+  // NOTE: In the Computer Sciences lingo, we often refer to functions that return Unit and
   // have side effects as Procedures, meanwhile Functions refers to a more orthodox meaning.
   val unit: Unit = ()
 

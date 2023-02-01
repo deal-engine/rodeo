@@ -42,7 +42,7 @@ object Variables extends Chapter {
 
   // Values can be eager or lazy.
   //
-  // Eager values are evaluted when the containing object is created. The two previous examples
+  // Eager values are evaluated when the containing object is created. The two previous examples
   // are computed when the `Variables` object is created.
   //
   // Lazy values are evaluated only when they are first accessed. Lazy values are useful when
