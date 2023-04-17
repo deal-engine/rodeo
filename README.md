@@ -25,11 +25,15 @@ Detailed instructions
 The first thing to do is to install Nix. This is a package manager. It will allow you to download
 dependencies in an isolated way.
 
-To install Nix in Linux run:
+The new recomended way of installation for both Linux and macOS is this one:
+
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+To install Nix in Linux run (using the official installer):
 
     sh <(curl -L https://nixos.org/nix/install) --daemon
 
-In macOS (Darwin) don't use `--daemon`:
+In macOS (Darwin) don't use `--daemon` (using the official installer):
 
     sh <(curl -L https://nixos.org/nix/install)
 
