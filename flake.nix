@@ -4,6 +4,8 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-root.url = "github:srid/flake-root";
     mission-control.url = "github:Platonic-Systems/mission-control";
+    please-build.url = "github:ivanmoreau/please";
+
   };
 
   outputs = inputs@{ self, nixpkgs, flake-parts, ... }:
@@ -12,8 +14,13 @@
       imports = [
         inputs.flake-root.flakeModule
         inputs.mission-control.flakeModule
+        inputs.flake-parts.flakeModules.easyOverlay
       ];
       perSystem = { pkgs, lib, config, system, ... }: {
+        overlayAttrs = {
+          inherit (config.packages) please;
+        };
+        packages.plz = inputs.please-build.packages.${system}.please-build;
         mission-control.scripts = {
           readme = {
             description = "Read the readme.";
@@ -40,6 +47,10 @@
               echo "Have fun! 🐴"
             '';
           };
+          build = {
+            description = "Please build.";
+            exec = "please build";
+          };
         };
         devShells.default =
           let unfreepkgs = import nixpkgs { 
@@ -55,8 +66,11 @@
             ];
           };
           shell = pkgs.mkShell {
-            buildInputs = [ 
+            buildInputs = [
+              config.packages.plz
               pkgs.mill
+              pkgs.coursier
+              pkgs.scala-cli
               vscode
             ];
           };

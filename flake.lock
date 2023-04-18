@@ -5,11 +5,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1671575600,
-        "narHash": "sha256-Wmbb7vEOHMFvGjqn/Jgck+fTwZ/N3k80bMG2yT+RZeg=",
+        "lastModified": 1673362319,
+        "narHash": "sha256-Pjp45Vnj7S/b3BRpZEVfdu8sqqA6nvVjvYu59okhOyI=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "0f13f0455740c3dabee986eb86a976073e31f4de",
+        "rev": "82c16f1682cf50c01cb0280b38a1eed202b3fe9f",
         "type": "github"
       },
       "original": {
@@ -70,11 +70,11 @@
     "nixpkgs-lib": {
       "locked": {
         "dir": "lib",
-        "lastModified": 1665349835,
-        "narHash": "sha256-UK4urM3iN80UXQ7EaOappDzcisYIuEURFRoGQ/yPkug=",
+        "lastModified": 1672350804,
+        "narHash": "sha256-jo6zkiCabUBn3ObuKXHGqqORUMH27gYDIFFfLq5P4wg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "34c5293a71ffdb2fe054eb5288adc1882c1eb0b1",
+        "rev": "677ed08a50931e38382dbef01cba08a8f7eac8f6",
         "type": "github"
       },
       "original": {
@@ -87,11 +87,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1663235518,
-        "narHash": "sha256-q8zLK6rK/CLXEguaPgm9yQJcY0VQtOBhAT9EV2UFK/A=",
+        "lastModified": 1673525234,
+        "narHash": "sha256-fMP37VTeqSzC8JYoQJinLOnHfjriE5uKInLWJRz5K3E=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2277e4c9010b0f27585eb0bed0a86d7cbc079354",
+        "rev": "92f9580a4c369b4b51a7b6a5e77da43720134c9f",
         "type": "github"
       },
       "original": {
@@ -101,12 +101,25 @@
         "type": "github"
       }
     },
+    "please-aarch64-darwin": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-R7c4CX3GTexdvCihe2UoBI9ruW91zTVCuhp3x7qLZhk=",
+        "type": "tarball",
+        "url": "https://github.com/thought-machine/please/releases/download/v16.26.1/please_16.26.1_darwin_arm64.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/thought-machine/please/releases/download/v16.26.1/please_16.26.1_darwin_arm64.tar.gz"
+      }
+    },
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
         "flake-root": "flake-root",
         "mission-control": "mission-control",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "please-aarch64-darwin": "please-aarch64-darwin"
       }
     }
   },
